@@ -1,0 +1,1460 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>Prisoner Training Tracker</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0f172a;
+      color: #e5e7eb;
+    }
+    header {
+      padding: 16px 24px;
+      background: #020617;
+      border-bottom: 1px solid #1e293b;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+    header small {
+      color: #9ca3af;
+      font-size: 12px;
+    }
+    main {
+      padding: 16px;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.1fr 1.2fr;
+      gap: 16px;
+    }
+    @media (max-width: 900px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+    }
+    section {
+      background: #020617;
+      border-radius: 12px;
+      padding: 14px 16px 18px;
+      border: 1px solid #1f2937;
+    }
+    section h2 {
+      margin: 0 0 10px;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    section h2 span.icon {
+      font-size: 18px;
+    }
+    label {
+      font-size: 12px;
+      color: #9ca3af;
+      display: block;
+      margin-bottom: 4px;
+    }
+    select, input, textarea, button {
+      font-family: inherit;
+    }
+    select, input[type="number"], input[type="date"], textarea {
+      width: 100%;
+      background: #020617;
+      color: #e5e7eb;
+      border-radius: 8px;
+      border: 1px solid #374151;
+      padding: 6px 8px;
+      font-size: 13px;
+      outline: none;
+    }
+    select:focus, input:focus, textarea:focus {
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 1px #38bdf8;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 40px;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .form-row-3 {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .mb-8 { margin-bottom: 8px; }
+    .mb-4 { margin-bottom: 4px; }
+
+    button.primary {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      border: none;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    button.primary:active {
+      transform: scale(0.97);
+    }
+    button.secondary {
+      background: #020617;
+      border: 1px solid #4b5563;
+      color: #e5e7eb;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    button.secondary:active {
+      transform: scale(0.97);
+    }
+    .buttons {
+      display: flex;
+      gap: 8px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+
+    /* Calendar */
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .calendar-header h3 {
+      margin: 0;
+      font-size: 14px;
+    }
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 4px;
+      font-size: 11px;
+    }
+    .calendar-cell {
+      border-radius: 8px;
+      border: 1px solid #111827;
+      min-height: 52px;
+      padding: 4px;
+      background: #020617;
+      cursor: pointer;
+      position: relative;
+    }
+    .calendar-cell.today {
+      border-color: #22c55e;
+      box-shadow: 0 0 0 1px rgba(34,197,94,0.5);
+    }
+    .calendar-cell-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2px;
+    }
+    .calendar-date {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+    .calendar-dots {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2px;
+    }
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+    }
+    .weekday-label {
+      text-align: center;
+      font-size: 11px;
+      color: #6b7280;
+      margin-bottom: 2px;
+    }
+
+    /* Legend */
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      color: #9ca3af;
+    }
+    .legend-color {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+    }
+
+    /* Charts */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 900px) {
+      .charts-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .chart-card {
+      background: #020617;
+      border-radius: 10px;
+      border: 1px solid #111827;
+      padding: 8px;
+    }
+    .chart-title {
+      font-size: 12px;
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #9ca3af;
+    }
+    canvas {
+      width: 100%;
+      max-width: 100%;
+      border-radius: 8px;
+      background: #020617;
+    }
+
+    /* Weekly summary */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    th, td {
+      padding: 4px 6px;
+      border-bottom: 1px solid #111827;
+      text-align: right;
+    }
+    th:first-child, td:first-child {
+      text-align: left;
+    }
+    th {
+      color: #9ca3af;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    /* Motivation */
+    #motivation-message {
+      font-size: 13px;
+      background: radial-gradient(circle at top left, #22c55e22, transparent 60%);
+      border-radius: 10px;
+      padding: 8px 10px;
+      border: 1px solid #14532d;
+      margin-top: 4px;
+      color: #bbf7d0;
+      white-space: pre-line;
+    }
+
+    /* Toast (STEP UP) */
+    #stepup-toast {
+      position: fixed;
+      left: 50%;
+      top: 16px;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      color: white;
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 10px 30px rgba(34,197,94,0.45);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      z-index: 50;
+    }
+    #stepup-toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    /* 編集モード表示 & 日別リスト */
+    #edit-banner {
+      display: none;
+      margin-bottom: 8px;
+      padding: 6px 8px;
+      border-radius: 8px;
+      border: 1px solid #f97316;
+      background: rgba(248, 113, 113, 0.08);
+      font-size: 12px;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    #edit-banner.visible {
+      display: flex;
+    }
+    #edit-banner span {
+      color: #fed7aa;
+    }
+    #date-entries-wrapper {
+      margin-top: 12px;
+      border-top: 1px solid #111827;
+      padding-top: 8px;
+    }
+    #date-entries-wrapper h3 {
+      margin: 0 0 6px;
+      font-size: 13px;
+      color: #9ca3af;
+    }
+    .entry-item {
+      border-radius: 8px;
+      border: 1px solid #1f2933;
+      padding: 6px 8px;
+      margin-bottom: 6px;
+      background: #020617;
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      gap: 6px;
+      align-items: center;
+    }
+    .entry-main {
+      flex: 1;
+      min-width: 0;
+    }
+    .entry-main div {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .entry-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .entry-actions button {
+      font-size: 10px;
+      padding: 3px 6px;
+    }
+
+    /* 名言セクション */
+    #quote-main {
+      font-size: 14px;
+      line-height: 1.7;
+      margin-bottom: 4px;
+      white-space: pre-line;
+    }
+    #quote-meta {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>プリズナートレーニング記録</h1>
+      <small>ビッグ6 × STEP1〜10 × 365日トラッカー</small>
+    </div>
+    <div id="today-label"></div>
+  </header>
+
+  <main>
+    <!-- 左カラム：入力・カレンダー -->
+    <div>
+      <!-- 今日のトレーニング入力 -->
+      <section id="input-section">
+        <h2><span class="icon">🏋️‍♂️</span> 今日のトレーニング</h2>
+
+        <!-- 編集モード表示 -->
+        <div id="edit-banner">
+          <span id="edit-banner-text"></span>
+          <button class="secondary" id="cancel-edit-btn">編集をキャンセル</button>
+        </div>
+
+        <div class="mb-8">
+          <label for="date-input">日付</label>
+          <input type="date" id="date-input" />
+        </div>
+
+        <div class="form-row">
+          <div>
+            <label for="exercise-select">種目</label>
+            <select id="exercise-select"></select>
+          </div>
+          <div>
+            <label for="step-select">STEP</label>
+            <select id="step-select"></select>
+          </div>
+        </div>
+
+        <div class="form-row-3">
+          <div>
+            <label for="reps-input">レップス数（1セットあたり）</label>
+            <input type="number" id="reps-input" min="1" value="10" />
+          </div>
+          <div>
+            <label for="sets-input">セット数</label>
+            <input type="number" id="sets-input" min="1" value="3" />
+          </div>
+          <div>
+            <label for="total-display">合計レップス</label>
+            <input type="number" id="total-display" readonly />
+          </div>
+        </div>
+
+        <div class="mb-8">
+          <label for="note-input">メモ（任意）</label>
+          <textarea id="note-input" placeholder="フォームの感覚、体調など"></textarea>
+        </div>
+
+        <div class="buttons">
+          <button class="primary" id="save-btn">💾 記録を保存</button>
+          <button class="secondary" id="clear-today-btn">今日の入力をクリア</button>
+        </div>
+
+        <!-- 選択した日の記録一覧 -->
+        <div id="date-entries-wrapper">
+          <h3>この日の記録一覧</h3>
+          <div id="date-entries-list"></div>
+        </div>
+      </section>
+
+      <!-- カレンダー -->
+      <section id="calendar-section">
+        <div class="calendar-header">
+          <h2><span class="icon">📅</span> カレンダー</h2>
+          <div>
+            <button class="secondary" id="prev-month-btn">← 前月</button>
+            <button class="secondary" id="next-month-btn">翌月 →</button>
+          </div>
+        </div>
+        <div class="calendar-header">
+          <h3 id="calendar-title"></h3>
+        </div>
+        <div class="calendar-grid" id="weekday-row"></div>
+        <div class="calendar-grid" id="calendar-grid"></div>
+        <div class="legend" id="legend"></div>
+      </section>
+    </div>
+
+    <!-- 右カラム：進捗・週次・名言・エクスポート -->
+    <div>
+      <!-- 進捗グラフ -->
+      <section id="progress-section">
+        <h2><span class="icon">📈</span> 種目ごとの進歩グラフ</h2>
+        <div class="charts-grid">
+          <div class="chart-card">
+            <div class="chart-title">
+              <span>プッシュアップ</span>
+              <span id="step-label-pushup"></span>
+            </div>
+            <canvas id="chart-pushup" width="400" height="220"></canvas>
+          </div>
+          <div class="chart-card">
+            <div class="chart-title">
+              <span>スクワット</span>
+              <span id="step-label-squat"></span>
+            </div>
+            <canvas id="chart-squat" width="400" height="220"></canvas>
+          </div>
+          <div class="chart-card">
+            <div class="chart-title">
+              <span>プルアップ</span>
+              <span id="step-label-pullup"></span>
+            </div>
+            <canvas id="chart-pullup" width="400" height="220"></canvas>
+          </div>
+          <div class="chart-card">
+            <div class="chart-title">
+              <span>レッグレイズ</span>
+              <span id="step-label-legraise"></span>
+            </div>
+            <canvas id="chart-legraise" width="400" height="220"></canvas>
+          </div>
+          <div class="chart-card">
+            <div class="chart-title">
+              <span>ブリッジ</span>
+              <span id="step-label-bridge"></span>
+            </div>
+            <canvas id="chart-bridge" width="400" height="220"></canvas>
+          </div>
+          <div class="chart-card">
+            <div class="chart-title">
+              <span>ハンドスタンド</span>
+              <span id="step-label-handstand"></span>
+            </div>
+            <canvas id="chart-handstand" width="400" height="220"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- 一週間の成果（STEP別） -->
+      <section id="weekly-section">
+        <h2><span class="icon">📊</span> 一週間の成果</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>種目</th>
+              <th>STEP1</th>
+              <th>STEP2</th>
+              <th>STEP3</th>
+              <th>STEP4</th>
+              <th>STEP5</th>
+              <th>STEP6</th>
+              <th>STEP7</th>
+              <th>STEP8</th>
+              <th>STEP9</th>
+              <th>STEP10</th>
+              <th>合計</th>
+            </tr>
+          </thead>
+          <tbody id="weekly-table-body"></tbody>
+        </table>
+        <div id="motivation-message"></div>
+      </section>
+
+      <!-- 日めくり名言 -->
+      <section id="quote-section">
+        <h2><span class="icon">🔥</span> 日めくり筋トレ名言</h2>
+        <div id="quote-main"></div>
+        <div id="quote-meta"></div>
+        <div class="buttons">
+          <button class="secondary" id="next-quote-btn">別の名言を見る</button>
+        </div>
+      </section>
+
+      <!-- エクスポート -->
+      <section id="export-section">
+        <h2><span class="icon">📁</span> データ管理</h2>
+        <div class="buttons">
+          <button class="secondary" id="export-csv-btn">📤 CSVエクスポート</button>
+          <button class="secondary" id="reset-all-btn">🗑 全データ削除</button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div id="stepup-toast">STEP UP! おめでとう！</div>
+
+  <script>
+    // ====== 名言データ ======
+    const QUOTES = [
+      {
+        text: "限界は筋肉が決めるんじゃない。\n今日の自分の覚悟が決める。",
+        author: "無名のハードトレーニー",
+        theme: "覚悟・限界突破"
+      },
+      {
+        text: "才能とは「続ける根性」に\n後から付いてくるニックネームだ。",
+        author: "どこかの天才候補",
+        theme: "才能・継続"
+      },
+      {
+        text: "サボった1日は、\n未来の自分からの借金だ。\n利子は“後悔”で払うことになる。",
+        author: "未来の自分",
+        theme: "継続・覚悟"
+      },
+      {
+        text: "筋肉は裏切らない。\n裏切ってくるのは、\nいつも言い訳だけだ。",
+        author: "筋肉原理主義者",
+        theme: "筋肉・言い訳"
+      },
+      {
+        text: "才能の差はスタートライン。\n根性の差はゴールテープでわかる。",
+        author: "レースの観客",
+        theme: "才能・根性"
+      },
+      {
+        text: "「続けられる人」は\n特別じゃない。\nやめないと決めただけの\n普通の人だ。",
+        author: "継続中毒者",
+        theme: "継続"
+      },
+      {
+        text: "あきらめる理由が\n100個あってもいい。\n続ける理由を\n1個だけ握りしめていれば勝ちだ。",
+        author: "崖っぷちの挑戦者",
+        theme: "あきらめない心"
+      },
+      {
+        text: "自信は\n「できた回数」の貯金だ。\n今日の1レップが、\n明日のドヤ顔を作る。",
+        author: "自意識マッチョ",
+        theme: "自信・努力"
+      },
+      {
+        text: "努力は\n裏切ることもある。\nでも、\nサボりは一度も\n裏切ったことがない。",
+        author: "反省会の常連",
+        theme: "努力・サボり"
+      },
+      {
+        text: "筋肉痛は、\n昨日の自分から届いた\n合格通知だ。",
+        author: "DOMSラバー",
+        theme: "筋肉・鍛錬"
+      },
+      {
+        text: "「まだいけるか？」じゃない。\n「ここからが本番だろ？」だ。",
+        author: "追い込み番長",
+        theme: "根性・追い込み"
+      },
+      {
+        text: "才能がドアを叩くのを\n待っている暇があるなら、\n今の自分でドアをぶち破れ。",
+        author: "壊し屋メンタリスト",
+        theme: "才能・行動"
+      },
+      {
+        text: "覚悟とは、\n「逃げ道を消す」ことじゃない。\n「逃げてもまた戻る」と\n決めている心だ。",
+        author: "出戻り戦士",
+        theme: "覚悟・継続"
+      },
+      {
+        text: "続けた奴だけが知っている。\n三日坊主には見えない景色が、\n四日目に急に来る。",
+        author: "四日目の住人",
+        theme: "継続"
+      },
+      {
+        text: "筋トレは\n「明日カッコよくなる儀式」じゃない。\n「今ここで\n自分を好きになる儀式」だ。",
+        author: "自尊心ビルダー",
+        theme: "筋肉・自信"
+      },
+      {
+        text: "限界だと思った回数から先が、\n“努力”で、\nそれまでは全部“準備運動”だ。",
+        author: "鬼コーチの中の人",
+        theme: "努力・限界"
+      },
+      {
+        text: "あきらめない心は、\n一度決めたら\n一生錆びない。\n錆びるのは\n決意じゃなくて言い訳だ。",
+        author: "ネバーギブアッパー",
+        theme: "あきらめない心"
+      },
+      {
+        text: "「センスがない」は\n今日サボるための\n一番オシャレな言い訳だ。",
+        author: "毒舌トレーナー",
+        theme: "才能・言い訳"
+      },
+      {
+        text: "根性とは、\n心が折れても\n行動だけは折らないことだ。",
+        author: "折れまくり経験者",
+        theme: "根性・行動"
+      },
+      {
+        text: "継続のコツは一つだけ。\n「やるか」「もっとやるか」の\n二択しか持たないことだ。",
+        author: "二択マニア",
+        theme: "継続・鍛錬"
+      },
+      {
+        text: "自信は\n結果からじゃなく、\n「ここまでやった自分」を\n裏切らなかった記憶から生まれる。",
+        author: "記憶コレクター",
+        theme: "自信・努力"
+      },
+      {
+        text: "今日サボれば\n楽にはなる。\nでも「自分ってこうだよな」が\nどんどんショボくなる。",
+        author: "元・言い訳職人",
+        theme: "自分像・覚悟"
+      },
+      {
+        text: "筋肉は\nウソをつかないけど、\nサボり続けると\n何も語ってくれなくなる。",
+        author: "筋肉との別れを経験した人",
+        theme: "筋肉・継続"
+      },
+      {
+        text: "才能はスタートダッシュ、\n根性は最後の一歩。\nレースを決めるのは\nいつも“最後の一歩”だ。",
+        author: "ゴールテープの目撃者",
+        theme: "才能・根性"
+      },
+      {
+        text: "鍛錬とは、\n「今日もやった」という\n小さい誇りを\n地層みたいに積み上げる作業だ。",
+        author: "誇りの地質学者",
+        theme: "鍛錬・継続"
+      },
+      {
+        text: "覚悟を決めるのに\nドラマチックな理由はいらない。\n「そろそろ本気出すか」で十分だ。",
+        author: "きっかけ職人",
+        theme: "覚悟"
+      },
+      {
+        text: "あきらめなかった人間だけが、\n「やめなくてよかった」と\n未来形で笑える。",
+        author: "未来から来たトレーニー",
+        theme: "あきらめない心"
+      },
+      {
+        text: "努力は報われないこともある。\nでも“努力しなかった自分”だけは\n一生許せない。",
+        author: "自己採点の鬼",
+        theme: "努力・後悔"
+      },
+      {
+        text: "自信をつけたいなら、\n結果をいじるな。\n今日の行動をいじれ。",
+        author: "現実主義の夢追い人",
+        theme: "自信・行動"
+      },
+      {
+        text: "筋肉は\n過去の自分からの\nラブレターだ。\nサボれば、\nいきなり音信不通になる。",
+        author: "ロマンチックボディ",
+        theme: "筋肉・継続"
+      },
+      {
+        text: "「まだ本気出してないだけ」は、\n本気を一度も出したことがない人の\n決まり文句だ。",
+        author: "鬼畜現実さん",
+        theme: "覚悟・行動"
+      },
+      {
+        text: "継続とは、\n“昨日までの自分”に\n容赦なく期待し続ける勇気だ。",
+        author: "期待し続ける人",
+        theme: "継続・勇気"
+      }
+    ];
+
+    // ====== 定数・状態 ======
+    const EXERCISES = [
+      { key: "pushup", label: "プッシュアップ", color: "#f97373" },
+      { key: "squat", label: "スクワット", color: "#fb923c" },
+      { key: "pullup", label: "プルアップ", color: "#3b82f6" },
+      { key: "legraise", label: "レッグレイズ", color: "#22c55e" },
+      { key: "bridge", label: "ブリッジ", color: "#a855f7" },
+      { key: "handstand", label: "ハンドスタンド", color: "#eab308" }
+    ];
+
+    const STORAGE_KEY_LOGS = "pt_logs_v1";
+    const STORAGE_KEY_STEPS = "pt_steps_v1";
+
+    const STEPUP_MIN_SETS = 3;
+    const STEPUP_MIN_TOTAL_REPS = 30;
+
+    let logs = [];
+    let currentSteps = {};
+    let currentMonth = {};
+    let editingId = null;
+    let quoteOffset = 0;
+
+    function todayISO() {
+      const d = new Date();
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+
+    function parseISO(dateStr) {
+      const [y, m, d] = dateStr.split("-").map(Number);
+      return new Date(y, m - 1, d);
+    }
+
+    function formatMonthTitle(year, month) {
+      return `${year}年${month}月`;
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY_LOGS, JSON.stringify(logs));
+      localStorage.setItem(STORAGE_KEY_STEPS, JSON.stringify(currentSteps));
+    }
+
+    function loadState() {
+      const logsJson = localStorage.getItem(STORAGE_KEY_LOGS);
+      logs = logsJson ? JSON.parse(logsJson) : [];
+      const stepsJson = localStorage.getItem(STORAGE_KEY_STEPS);
+      if (stepsJson) {
+        currentSteps = JSON.parse(stepsJson);
+      } else {
+        EXERCISES.forEach(ex => currentSteps[ex.key] = 1);
+      }
+    }
+
+    function showStepUpToast(message) {
+      const toast = document.getElementById("stepup-toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 2500);
+    }
+
+    function calcStreak() {
+      if (logs.length === 0) return 0;
+      const datesSet = new Set(logs.map(l => l.date));
+      let streak = 0;
+      let day = parseISO(todayISO());
+      while (true) {
+        const y = day.getFullYear();
+        const m = String(day.getMonth() + 1).padStart(2, "0");
+        const d = String(day.getDate()).padStart(2, "0");
+        const iso = `${y}-${m}-${d}`;
+        if (datesSet.has(iso)) {
+          streak++;
+          day.setDate(day.getDate() - 1);
+        } else {
+          break;
+        }
+      }
+      return streak;
+    }
+
+    function getWeekRange(offsetWeeks = 0) {
+      const today = new Date();
+      const dayOfWeek = today.getDay();
+      const mondayOffset = (dayOfWeek + 6) % 7;
+      const monday = new Date(today);
+      monday.setDate(today.getDate() - mondayOffset + offsetWeeks * 7);
+      const sunday = new Date(monday);
+      sunday.setDate(monday.getDate() + 6);
+
+      const toISO = d => {
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, "0");
+        const da = String(d.getDate()).padStart(2, "0");
+        return `${y}-${m}-${da}`;
+      };
+
+      return { start: toISO(monday), end: toISO(sunday) };
+    }
+
+    function isBetween(dateStr, startIso, endIso) {
+      return dateStr >= startIso && dateStr <= endIso;
+    }
+
+    function getDayOfYear(date) {
+      const start = new Date(date.getFullYear(), 0, 0);
+      const diff = date - start;
+      const oneDay = 1000 * 60 * 60 * 24;
+      return Math.floor(diff / oneDay);
+    }
+
+    // カレンダー
+    function renderWeekdays() {
+      const weekdayRow = document.getElementById("weekday-row");
+      weekdayRow.innerHTML = "";
+      const names = ["日", "月", "火", "水", "木", "金", "土"];
+      names.forEach(n => {
+        const div = document.createElement("div");
+        div.className = "weekday-label";
+        div.textContent = n;
+        weekdayRow.appendChild(div);
+      });
+    }
+
+    function renderCalendar() {
+      const grid = document.getElementById("calendar-grid");
+      grid.innerHTML = "";
+
+      const { year, month } = currentMonth;
+      document.getElementById("calendar-title").textContent = formatMonthTitle(year, month);
+
+      const firstDay = new Date(year, month - 1, 1);
+      const firstWeekday = firstDay.getDay();
+      const daysInMonth = new Date(year, month, 0).getDate();
+
+      const logsByDate = {};
+      logs.forEach(l => {
+        if (!logsByDate[l.date]) logsByDate[l.date] = [];
+        logsByDate[l.date].push(l);
+      });
+
+      const todayIso = todayISO();
+
+      for (let i = 0; i < firstWeekday; i++) {
+        const cell = document.createElement("div");
+        grid.appendChild(cell);
+      }
+
+      for (let date = 1; date <= daysInMonth; date++) {
+        const cell = document.createElement("div");
+        cell.className = "calendar-cell";
+        const iso = `${year}-${String(month).padStart(2, "0")}-${String(date).padStart(2, "0")}`;
+        if (iso === todayIso) {
+          cell.classList.add("today");
+        }
+
+        const header = document.createElement("div");
+        header.className = "calendar-cell-header";
+
+        const dateSpan = document.createElement("span");
+        dateSpan.className = "calendar-date";
+        dateSpan.textContent = date;
+
+        header.appendChild(dateSpan);
+        cell.appendChild(header);
+
+        const dotsContainer = document.createElement("div");
+        dotsContainer.className = "calendar-dots";
+
+        const dayLogs = logsByDate[iso] || [];
+        const exercisesUsed = new Set(dayLogs.map(l => l.exercise));
+        let count = 0;
+        exercisesUsed.forEach(exKey => {
+          const exInfo = EXERCISES.find(e => e.key === exKey);
+          const dot = document.createElement("div");
+          dot.className = "dot";
+          dot.style.backgroundColor = exInfo ? exInfo.color : "#6b7280";
+          dotsContainer.appendChild(dot);
+          count++;
+        });
+        if (count === 0) {
+          const empty = document.createElement("span");
+          empty.style.fontSize = "10px";
+          empty.style.color = "#374151";
+          empty.textContent = "-";
+          dotsContainer.appendChild(empty);
+        }
+
+        cell.appendChild(dotsContainer);
+        cell.addEventListener("click", () => {
+          const dateInput = document.getElementById("date-input");
+          dateInput.value = iso;
+          dateInput.dispatchEvent(new Event("change"));
+        });
+
+        grid.appendChild(cell);
+      }
+    }
+
+    function renderLegend() {
+      const legend = document.getElementById("legend");
+      legend.innerHTML = "";
+      EXERCISES.forEach(ex => {
+        const item = document.createElement("div");
+        item.className = "legend-item";
+        const colorBox = document.createElement("div");
+        colorBox.className = "legend-color";
+        colorBox.style.backgroundColor = ex.color;
+        const label = document.createElement("span");
+        label.textContent = ex.label;
+        item.appendChild(colorBox);
+        item.appendChild(label);
+        legend.appendChild(item);
+      });
+    }
+
+    // グラフ
+    function drawExerciseChart(exKey) {
+      const canvas = document.getElementById("chart-" + exKey);
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const filtered = logs.filter(l => l.exercise === exKey);
+      if (filtered.length === 0) {
+        ctx.fillStyle = "#6b7280";
+        ctx.font = "12px sans-serif";
+        ctx.fillText("データなし", 10, 20);
+        return;
+      }
+
+      const byDate = {};
+      filtered.forEach(l => {
+        if (!byDate[l.date]) byDate[l.date] = 0;
+        byDate[l.date] += l.totalReps;
+      });
+
+      const dates = Object.keys(byDate).sort();
+      const values = dates.map(d => byDate[d]);
+
+      const paddingLeft = 30;
+      const paddingBottom = 22;
+      const paddingTop = 10;
+      const paddingRight = 10;
+      const W = canvas.width;
+      const H = canvas.height;
+
+      const maxY = Math.max(...values, 1);
+
+      ctx.strokeStyle = "#374151";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(paddingLeft, paddingTop);
+      ctx.lineTo(paddingLeft, H - paddingBottom);
+      ctx.lineTo(W - paddingRight, H - paddingBottom);
+      ctx.stroke();
+
+      ctx.fillStyle = "#6b7280";
+      ctx.font = "10px sans-serif";
+      ctx.textAlign = "right";
+      ctx.textBaseline = "middle";
+      ctx.fillText(String(maxY), paddingLeft - 4, paddingTop + 4);
+      ctx.fillText(String(Math.round(maxY / 2)), paddingLeft - 4, (H - paddingBottom + paddingTop) / 2);
+
+      ctx.strokeStyle = "#38bdf8";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      dates.forEach((d, i) => {
+        const x = paddingLeft + (dates.length === 1 ? (W - paddingLeft - paddingRight) / 2 : (W - paddingLeft - paddingRight) * (i / (dates.length - 1)));
+        const y = (H - paddingBottom) - (H - paddingBottom - paddingTop) * (values[i] / maxY);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+
+      ctx.fillStyle = "#f97316";
+      dates.forEach((d, i) => {
+        const x = paddingLeft + (dates.length === 1 ? (W - paddingLeft - paddingRight) / 2 : (W - paddingLeft - paddingRight) * (i / (dates.length - 1)));
+        const y = (H - paddingBottom) - (H - paddingBottom - paddingTop) * (values[i] / maxY);
+        ctx.beginPath();
+        ctx.arc(x, y, 3, 0, Math.PI * 2);
+        ctx.fill();
+      });
+    }
+
+    function renderAllCharts() {
+      EXERCISES.forEach(ex => {
+        drawExerciseChart(ex.key);
+        const label = document.getElementById("step-label-" + ex.key);
+        if (label) {
+          label.textContent = "STEP " + (currentSteps[ex.key] || 1);
+        }
+      });
+    }
+
+    // 一週間の成果（STEP別）
+    function renderWeeklyComparison() {
+      const tbody = document.getElementById("weekly-table-body");
+      tbody.innerHTML = "";
+
+      const thisWeek = getWeekRange(0);
+
+      EXERCISES.forEach(ex => {
+        const stepTotals = new Array(11).fill(0); // 1〜10を使用
+
+        logs.forEach(l => {
+          if (l.exercise !== ex.key) return;
+          if (!isBetween(l.date, thisWeek.start, thisWeek.end)) return;
+
+          let s = Number(l.step) || 0;
+          if (s < 1) s = 1;
+          if (s > 10) s = 10;
+          stepTotals[s] += l.totalReps;
+        });
+
+        const tr = document.createElement("tr");
+        const nameTd = document.createElement("td");
+        nameTd.textContent = ex.label;
+        tr.appendChild(nameTd);
+
+        let weekSum = 0;
+        for (let s = 1; s <= 10; s++) {
+          const td = document.createElement("td");
+          const v = stepTotals[s];
+          td.textContent = v > 0 ? v : "";
+          tr.appendChild(td);
+          weekSum += v;
+        }
+        const totalTd = document.createElement("td");
+        totalTd.textContent = weekSum;
+        tr.appendChild(totalTd);
+
+        tbody.appendChild(tr);
+      });
+
+      const streak = calcStreak();
+      const totalLogs = logs.length;
+      const msg = document.getElementById("motivation-message");
+      if (totalLogs === 0) {
+        msg.textContent = "まだ記録はありません。今日が “1日目” です🔥";
+      } else {
+        msg.textContent =
+          `現在の連続トレ日数：${streak}日 🔥  /  これまでの記録：${totalLogs} セッション\n` +
+          `「昨日の自分」を少しずつ上回っていきましょう。`;
+      }
+    }
+
+    // 日付ごとの記録一覧
+    function renderEntriesForDate(date) {
+      const list = document.getElementById("date-entries-list");
+      list.innerHTML = "";
+
+      const dayLogs = logs
+        .filter(l => l.date === date)
+        .sort((a, b) => a.exercise.localeCompare(b.exercise));
+
+      if (dayLogs.length === 0) {
+        const empty = document.createElement("div");
+        empty.style.fontSize = "11px";
+        empty.style.color = "#6b7280";
+        empty.textContent = "この日の記録はありません。";
+        list.appendChild(empty);
+        return;
+      }
+
+      dayLogs.forEach(entry => {
+        const exInfo = EXERCISES.find(e => e.key === entry.exercise);
+        const item = document.createElement("div");
+        item.className = "entry-item";
+
+        const main = document.createElement("div");
+        main.className = "entry-main";
+
+        const line1 = document.createElement("div");
+        line1.textContent =
+          `${exInfo ? exInfo.label : entry.exercise} / STEP ${entry.step} / ${entry.sets}セット × ${entry.repsPerSet}回（合計${entry.totalReps}）`;
+        const line2 = document.createElement("div");
+        line2.style.fontSize = "11px";
+        line2.style.color = "#9ca3af";
+        line2.textContent = entry.note || "メモなし";
+
+        main.appendChild(line1);
+        main.appendChild(line2);
+
+        const actions = document.createElement("div");
+        actions.className = "entry-actions";
+
+        const editBtn = document.createElement("button");
+        editBtn.className = "secondary";
+        editBtn.textContent = "編集";
+        editBtn.addEventListener("click", () => {
+          startEditEntry(entry);
+        });
+
+        const delBtn = document.createElement("button");
+        delBtn.className = "secondary";
+        delBtn.textContent = "削除";
+        delBtn.addEventListener("click", () => {
+          deleteEntry(entry);
+        });
+
+        actions.appendChild(editBtn);
+        actions.appendChild(delBtn);
+
+        item.appendChild(main);
+        item.appendChild(actions);
+        list.appendChild(item);
+      });
+    }
+
+    function startEditEntry(entry) {
+      editingId = entry.id;
+
+      const dateInput = document.getElementById("date-input");
+      const exSelect = document.getElementById("exercise-select");
+      const stepSelect = document.getElementById("step-select");
+      const repsInput = document.getElementById("reps-input");
+      const setsInput = document.getElementById("sets-input");
+      const noteInput = document.getElementById("note-input");
+      const totalDisplay = document.getElementById("total-display");
+
+      dateInput.value = entry.date;
+      exSelect.value = entry.exercise;
+      stepSelect.value = entry.step;
+      repsInput.value = entry.repsPerSet;
+      setsInput.value = entry.sets;
+      noteInput.value = entry.note || "";
+      totalDisplay.value = entry.totalReps;
+
+      const exInfo = EXERCISES.find(e => e.key === entry.exercise);
+      const banner = document.getElementById("edit-banner");
+      const bannerText = document.getElementById("edit-banner-text");
+      bannerText.textContent =
+        `編集中: ${entry.date} / ${exInfo ? exInfo.label : entry.exercise} / STEP ${entry.step}`;
+      banner.classList.add("visible");
+
+      renderEntriesForDate(entry.date);
+    }
+
+    function cancelEdit() {
+      editingId = null;
+      const banner = document.getElementById("edit-banner");
+      banner.classList.remove("visible");
+    }
+
+    function deleteEntry(entry) {
+      if (!confirm("この記録を削除しますか？")) return;
+      logs = logs.filter(l => l.id !== entry.id);
+      if (editingId === entry.id) {
+        cancelEdit();
+      }
+      saveState();
+      renderCalendar();
+      renderAllCharts();
+      renderWeeklyComparison();
+      renderEntriesForDate(entry.date);
+    }
+
+    function initForm() {
+      const dateInput = document.getElementById("date-input");
+      const exSelect = document.getElementById("exercise-select");
+      const stepSelect = document.getElementById("step-select");
+      const repsInput = document.getElementById("reps-input");
+      const setsInput = document.getElementById("sets-input");
+      const totalDisplay = document.getElementById("total-display");
+      const noteInput = document.getElementById("note-input");
+
+      dateInput.value = todayISO();
+
+      exSelect.innerHTML = "";
+      EXERCISES.forEach(ex => {
+        const opt = document.createElement("option");
+        opt.value = ex.key;
+        opt.textContent = ex.label;
+        exSelect.appendChild(opt);
+      });
+
+      stepSelect.innerHTML = "";
+      for (let i = 1; i <= 10; i++) {
+        const opt = document.createElement("option");
+        opt.value = i;
+        opt.textContent = "STEP " + i;
+        stepSelect.appendChild(opt);
+      }
+
+      exSelect.addEventListener("change", () => {
+        if (editingId) return;
+        const exKey = exSelect.value;
+        const step = currentSteps[exKey] || 1;
+        stepSelect.value = step;
+      });
+      exSelect.dispatchEvent(new Event("change"));
+
+      function updateTotal() {
+        const reps = Number(repsInput.value) || 0;
+        const sets = Number(setsInput.value) || 0;
+        totalDisplay.value = reps * sets;
+      }
+      repsInput.addEventListener("input", updateTotal);
+      setsInput.addEventListener("input", updateTotal);
+      updateTotal();
+
+      dateInput.addEventListener("change", () => {
+        renderEntriesForDate(dateInput.value);
+      });
+
+      document.getElementById("save-btn").addEventListener("click", () => {
+        const date = dateInput.value;
+        const exercise = exSelect.value;
+        const step = Number(stepSelect.value);
+        const repsPerSet = Number(repsInput.value);
+        const sets = Number(setsInput.value);
+        const note = noteInput.value.trim();
+
+        if (!date) {
+          alert("日付を入力してください。");
+          return;
+        }
+        if (!exercise) {
+          alert("種目を選択してください。");
+          return;
+        }
+        if (repsPerSet <= 0 || sets <= 0) {
+          alert("レップス数とセット数は1以上で入力してください。");
+          return;
+        }
+
+        const totalReps = repsPerSet * sets;
+
+        if (editingId) {
+          const idx = logs.findIndex(l => l.id === editingId);
+          if (idx !== -1) {
+            logs[idx] = {
+              ...logs[idx],
+              date,
+              exercise,
+              step,
+              sets,
+              repsPerSet,
+              totalReps,
+              note
+            };
+          }
+          cancelEdit();
+        } else {
+          const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+          const entry = {
+            id,
+            date,
+            exercise,
+            step,
+            sets,
+            repsPerSet,
+            totalReps,
+            note
+          };
+          logs.push(entry);
+        }
+
+        const currentStepForEx = currentSteps[exercise] || 1;
+        if (
+          step === currentStepForEx &&
+          sets >= STEPUP_MIN_SETS &&
+          totalReps >= STEPUP_MIN_TOTAL_REPS &&
+          currentStepForEx < 10
+        ) {
+          currentSteps[exercise] = currentStepForEx + 1;
+          const exInfo = EXERCISES.find(e => e.key === exercise);
+          showStepUpToast(`${exInfo ? exInfo.label : exercise} が STEP ${currentStepForEx} → STEP ${currentStepForEx + 1} にアップ！`);
+        }
+
+        saveState();
+        renderCalendar();
+        renderAllCharts();
+        renderWeeklyComparison();
+        renderEntriesForDate(date);
+
+        if (!editingId) {
+          noteInput.value = "";
+        }
+
+        alert("記録を保存しました！");
+      });
+
+      document.getElementById("clear-today-btn").addEventListener("click", () => {
+        cancelEdit();
+        dateInput.value = todayISO();
+        exSelect.value = EXERCISES[0].key;
+        exSelect.dispatchEvent(new Event("change"));
+        repsInput.value = 10;
+        setsInput.value = 3;
+        noteInput.value = "";
+        updateTotal();
+        renderEntriesForDate(dateInput.value);
+      });
+
+      document.getElementById("cancel-edit-btn").addEventListener("click", () => {
+        cancelEdit();
+      });
+    }
+
+    // 名言
+    function renderDailyQuote() {
+      const quoteMain = document.getElementById("quote-main");
+      const quoteMeta = document.getElementById("quote-meta");
+      if (!quoteMain || !quoteMeta) return;
+
+      const today = new Date();
+      const dayOfYear = getDayOfYear(today);
+      const len = QUOTES.length || 1;
+      let index = (dayOfYear + quoteOffset) % len;
+      if (index < 0) index += len;
+
+      const q = QUOTES[index];
+      quoteMain.textContent = `「${q.text}」`;
+      quoteMeta.textContent = `― ${q.author}（テーマ：${q.theme}）`;
+    }
+
+    // CSV
+    function exportCSV() {
+      if (logs.length === 0) {
+        alert("エクスポートするデータがありません。");
+        return;
+      }
+      const header = ["id","date","exercise","step","sets","repsPerSet","totalReps","note"];
+      const rows = [header.join(",")];
+
+      logs.forEach(l => {
+        const row = [
+          l.id,
+          l.date,
+          l.exercise,
+          l.step,
+          l.sets,
+          l.repsPerSet,
+          l.totalReps,
+          `"${(l.note || "").replace(/"/g, '""')}"`
+        ];
+        rows.push(row.join(","));
+      });
+
+      const csvContent = rows.join("\n");
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "prisoner_training_logs.csv";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function resetAllData() {
+      if (!confirm("本当に全てのデータを削除しますか？（元に戻せません）")) return;
+      logs = [];
+      currentSteps = {};
+      EXERCISES.forEach(ex => currentSteps[ex.key] = 1);
+      editingId = null;
+      saveState();
+      renderCalendar();
+      renderAllCharts();
+      renderWeeklyComparison();
+      const today = todayISO();
+      document.getElementById("date-input").value = today;
+      renderEntriesForDate(today);
+      alert("全てのデータを削除しました。");
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      loadState();
+
+      const todayLabel = document.getElementById("today-label");
+      const today = parseISO(todayISO());
+      todayLabel.textContent = `${today.getFullYear()}年${today.getMonth() + 1}月${today.getDate()}日`;
+
+      currentMonth.year = today.getFullYear();
+      currentMonth.month = today.getMonth() + 1;
+
+      initForm();
+      renderWeekdays();
+      renderCalendar();
+      renderLegend();
+      renderAllCharts();
+      renderWeeklyComparison();
+      renderEntriesForDate(todayISO());
+
+      renderDailyQuote();
+      const nextQuoteBtn = document.getElementById("next-quote-btn");
+      if (nextQuoteBtn) {
+        nextQuoteBtn.addEventListener("click", () => {
+          quoteOffset += 1;
+          renderDailyQuote();
+        });
+      }
+
+      document.getElementById("prev-month-btn").addEventListener("click", () => {
+        let { year, month } = currentMonth;
+        month--;
+        if (month === 0) {
+          month = 12;
+          year--;
+        }
+        currentMonth.year = year;
+        currentMonth.month = month;
+        renderCalendar();
+      });
+      document.getElementById("next-month-btn").addEventListener("click", () => {
+        let { year, month } = currentMonth;
+        month++;
+        if (month === 13) {
+          month = 1;
+          year++;
+        }
+        currentMonth.year = year;
+        currentMonth.month = month;
+        renderCalendar();
+      });
+
+      document.getElementById("export-csv-btn").addEventListener("click", exportCSV);
+      document.getElementById("reset-all-btn").addEventListener("click", resetAllData);
+    });
+  </script>
+</body>
+</html>
