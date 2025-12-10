@@ -3,89 +3,128 @@
 <head>
   <meta charset="UTF-8" />
   <title>Prisoner Training Tracker</title>
+
+  <!-- Holy × High-end 用フォント -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+
   <style>
     * { box-sizing: border-box; }
+
+    /* ===== ベースレイアウト / 配色 ===== */
     body {
       margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #0f172a;
+      font-family: "Noto Sans JP", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(212,175,55,0.18), transparent 58%),
+        #050711;
       color: #e5e7eb;
     }
+
     header {
       padding: 16px 24px;
-      background: #020617;
-      border-bottom: 1px solid #1e293b;
+      background: linear-gradient(120deg, #050711, #101420 55%, #050711);
+      border-bottom: 1px solid rgba(212,175,55,0.45);
       display: flex;
       justify-content: space-between;
       align-items: center;
       position: sticky;
       top: 0;
       z-index: 10;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.6);
     }
     header h1 {
       margin: 0;
-      font-size: 20px;
+      font-size: 24px;
+      font-family: "Cormorant Garamond","Noto Serif JP", serif;
+      letter-spacing: 1px;
     }
     header small {
-      color: #9ca3af;
+      color: #cbd5f5;
       font-size: 12px;
     }
+    #today-label {
+      font-size: 12px;
+      color: #e5e7eb;
+      font-family: "Cormorant Garamond","Noto Serif JP", serif;
+      letter-spacing: 0.6px;
+    }
+
     main {
-      padding: 16px;
+      padding: 20px 16px 24px;
       max-width: 1200px;
       margin: 0 auto;
       display: grid;
       grid-template-columns: 1.1fr 1.2fr;
-      gap: 16px;
+      gap: 18px;
     }
     @media (max-width: 900px) {
       main {
         grid-template-columns: 1fr;
       }
     }
+
     section {
-      background: #020617;
-      border-radius: 12px;
-      padding: 14px 16px 18px;
-      border: 1px solid #1f2937;
+      background: radial-gradient(circle at top, rgba(255,255,255,0.04), transparent 70%), #14171d;
+      border-radius: 16px;
+      padding: 20px 22px 22px;
+      border: 1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 0 26px rgba(0,0,0,0.65);
     }
+
     section h2 {
-      margin: 0 0 10px;
-      font-size: 16px;
+      margin: 0 0 14px;
+      font-size: 18px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
+      font-family: "Cormorant Garamond","Noto Serif JP", serif;
+      letter-spacing: 0.5px;
     }
     section h2 span.icon {
-      font-size: 18px;
+      font-size: 20px;
+      color: #d4af37; /* ゴールドアクセント */
     }
+
     label {
       font-size: 12px;
-      color: #9ca3af;
+      color: #a5b4fc;
       display: block;
       margin-bottom: 4px;
     }
+
     select, input, textarea, button {
       font-family: inherit;
     }
-    select, input[type="number"], input[type="date"], textarea {
+
+    select,
+    input[type="number"],
+    input[type="date"],
+    textarea {
       width: 100%;
-      background: #020617;
-      color: #e5e7eb;
-      border-radius: 8px;
-      border: 1px solid #374151;
-      padding: 6px 8px;
+      background: rgba(255,255,255,0.02);
+      color: #f9fafb;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.16);
+      padding: 7px 9px;
       font-size: 13px;
       outline: none;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
     }
-    select:focus, input:focus, textarea:focus {
-      border-color: #38bdf8;
-      box-shadow: 0 0 0 1px #38bdf8;
+    select:focus,
+    input:focus,
+    textarea:focus {
+      border-color: #d4af37;
+      box-shadow: 0 0 0 1px #d4af37;
+      background: rgba(255,255,255,0.06);
     }
+
     textarea {
       resize: vertical;
       min-height: 40px;
     }
+
     .form-row {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -101,11 +140,12 @@
     .mb-8 { margin-bottom: 8px; }
     .mb-4 { margin-bottom: 4px; }
 
+    /* ===== ボタン ===== */
     button.primary {
-      background: linear-gradient(135deg, #22c55e, #16a34a);
+      background: linear-gradient(135deg, #d4af37, #b38a2e);
       border: none;
-      color: white;
-      padding: 8px 14px;
+      color: #050711;
+      padding: 9px 18px;
       border-radius: 999px;
       font-size: 14px;
       font-weight: 600;
@@ -113,21 +153,24 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      box-shadow: 0 0 14px rgba(212,175,55,0.55);
     }
     button.primary:active {
       transform: scale(0.97);
+      box-shadow: 0 0 8px rgba(212,175,55,0.45);
     }
     button.secondary {
-      background: #020617;
-      border: 1px solid #4b5563;
-      color: #e5e7eb;
-      padding: 6px 10px;
+      background: rgba(212,175,55,0.10);
+      border: 1px solid rgba(212,175,55,0.45);
+      color: #facc15;
+      padding: 6px 12px;
       border-radius: 999px;
       font-size: 12px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 4px;
+      backdrop-filter: blur(3px);
     }
     button.secondary:active {
       transform: scale(0.97);
@@ -135,11 +178,11 @@
     .buttons {
       display: flex;
       gap: 8px;
-      margin-top: 6px;
+      margin-top: 8px;
       flex-wrap: wrap;
     }
 
-    /* Calendar */
+    /* ===== カレンダー ===== */
     .calendar-header {
       display: flex;
       justify-content: space-between;
@@ -149,6 +192,9 @@
     .calendar-header h3 {
       margin: 0;
       font-size: 14px;
+      font-family: "Cormorant Garamond","Noto Serif JP", serif;
+      letter-spacing: 0.5px;
+      color: #e5e7eb;
     }
     .calendar-grid {
       display: grid;
@@ -157,17 +203,23 @@
       font-size: 11px;
     }
     .calendar-cell {
-      border-radius: 8px;
-      border: 1px solid #111827;
-      min-height: 52px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.06);
+      min-height: 54px;
       padding: 4px;
-      background: #020617;
+      background: radial-gradient(circle at top, rgba(255,255,255,0.05), transparent 70%);
       cursor: pointer;
       position: relative;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.12s ease;
+    }
+    .calendar-cell:hover {
+      border-color: rgba(212,175,55,0.55);
+      box-shadow: 0 0 12px rgba(212,175,55,0.3);
+      transform: translateY(-1px);
     }
     .calendar-cell.today {
-      border-color: #22c55e;
-      box-shadow: 0 0 0 1px rgba(34,197,94,0.5);
+      border-color: #d4af37;
+      box-shadow: 0 0 0 1px rgba(212,175,55,0.8);
     }
     .calendar-cell-header {
       display: flex;
@@ -177,7 +229,7 @@
     }
     .calendar-date {
       font-size: 11px;
-      color: #9ca3af;
+      color: #e5e7eb;
     }
     .calendar-dots {
       display: flex;
@@ -192,31 +244,34 @@
     .weekday-label {
       text-align: center;
       font-size: 11px;
-      color: #6b7280;
+      color: #9ca3af;
       margin-bottom: 2px;
+      font-family: "Cormorant Garamond","Noto Serif JP", serif;
+      letter-spacing: 0.3px;
     }
 
-    /* Legend */
+    /* ===== Legend ===== */
     .legend {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      margin-top: 6px;
+      margin-top: 8px;
     }
     .legend-item {
       display: inline-flex;
       align-items: center;
       gap: 4px;
       font-size: 11px;
-      color: #9ca3af;
+      color: #cbd5f5;
     }
     .legend-color {
       width: 10px;
       height: 10px;
       border-radius: 999px;
+      box-shadow: 0 0 6px rgba(0,0,0,0.6);
     }
 
-    /* Charts */
+    /* ===== Charts ===== */
     .charts-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -228,27 +283,29 @@
       }
     }
     .chart-card {
-      background: #020617;
-      border-radius: 10px;
-      border: 1px solid #111827;
-      padding: 8px;
+      background: #14171d;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.06);
+      padding: 10px;
+      box-shadow: inset 0 0 18px rgba(0,0,0,0.65);
     }
     .chart-title {
       font-size: 12px;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      color: #9ca3af;
+      color: #cbd5f5;
     }
     canvas {
       width: 100%;
       max-width: 100%;
-      border-radius: 8px;
-      background: #020617;
+      border-radius: 10px;
+      background: radial-gradient(circle at top, rgba(255,255,255,0.06), transparent 70%);
+      border: 1px solid rgba(255,255,255,0.05);
     }
 
-    /* Weekly summary */
+    /* ===== 月間サマリーテーブル ===== */
     table {
       width: 100%;
       border-collapse: collapse;
@@ -256,43 +313,48 @@
     }
     th, td {
       padding: 4px 6px;
-      border-bottom: 1px solid #111827;
+      border-bottom: 1px solid rgba(148,163,184,0.25);
       text-align: right;
     }
     th:first-child, td:first-child {
       text-align: left;
     }
     th {
-      color: #9ca3af;
+      color: #cbd5f5;
       font-weight: 500;
       white-space: nowrap;
+      font-family: "Cormorant Garamond","Noto Serif JP", serif;
+      letter-spacing: 0.3px;
+    }
+    tbody tr:nth-child(even) {
+      background: rgba(15,23,42,0.55);
     }
 
-    /* Motivation */
+    /* ===== Motivation ===== */
     #motivation-message {
       font-size: 13px;
-      background: radial-gradient(circle at top left, #22c55e22, transparent 60%);
+      background: radial-gradient(circle at top left, rgba(212,175,55,0.22), transparent 60%);
       border-radius: 10px;
-      padding: 8px 10px;
-      border: 1px solid #14532d;
-      margin-top: 4px;
-      color: #bbf7d0;
+      padding: 9px 11px;
+      border: 1px solid rgba(212,175,55,0.75);
+      margin-top: 6px;
+      color: #fef3c7;
       white-space: pre-line;
     }
 
-    /* Toast (STEP UP) */
+    /* ===== Toast (STEP UP) ===== */
     #stepup-toast {
       position: fixed;
       left: 50%;
       top: 16px;
       transform: translateX(-50%);
-      background: linear-gradient(135deg, #22c55e, #16a34a);
-      color: white;
-      padding: 10px 16px;
+      background: linear-gradient(135deg, #d4af37, #b38a2e);
+      color: #050711;
+      padding: 10px 18px;
       border-radius: 999px;
       font-size: 14px;
       font-weight: 600;
-      box-shadow: 0 10px 30px rgba(34,197,94,0.45);
+      box-shadow: 0 14px 38px rgba(212,175,55,0.55);
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.3s ease, transform 0.3s ease;
@@ -303,16 +365,15 @@
       transform: translate(-50%, 0);
     }
 
-    /* 編集モード表示 & 日別リスト */
+    /* ===== 編集モード & 日別リスト ===== */
     #edit-banner {
       display: none;
       margin-bottom: 8px;
       padding: 6px 8px;
-      border-radius: 8px;
-      border: 1px solid #f97316;
-      background: rgba(248, 113, 113, 0.08);
+      border-radius: 10px;
+      border: 1px solid #f59e0b;
+      background: rgba(248, 184, 80, 0.10);
       font-size: 12px;
-      display: none;
       align-items: center;
       justify-content: space-between;
       gap: 8px;
@@ -325,20 +386,22 @@
     }
     #date-entries-wrapper {
       margin-top: 12px;
-      border-top: 1px solid #111827;
+      border-top: 1px solid rgba(148,163,184,0.35);
       padding-top: 8px;
     }
     #date-entries-wrapper h3 {
       margin: 0 0 6px;
       font-size: 13px;
-      color: #9ca3af;
+      color: #cbd5f5;
+      font-family: "Cormorant Garamond","Noto Serif JP", serif;
+      letter-spacing: 0.3px;
     }
     .entry-item {
-      border-radius: 8px;
-      border: 1px solid #1f2933;
+      border-radius: 10px;
+      border: 1px solid rgba(148,163,184,0.35);
       padding: 6px 8px;
       margin-bottom: 6px;
-      background: #020617;
+      background: rgba(15,23,42,0.85);
       font-size: 12px;
       display: flex;
       justify-content: space-between;
@@ -364,16 +427,18 @@
       padding: 3px 6px;
     }
 
-    /* 名言セクション */
+    /* ===== 名言セクション ===== */
     #quote-main {
       font-size: 14px;
-      line-height: 1.7;
+      line-height: 1.8;
       margin-bottom: 4px;
       white-space: pre-line;
     }
     #quote-meta {
       font-size: 11px;
-      color: #9ca3af;
+      color: #cbd5f5;
+      font-family: "Cormorant Garamond","Noto Serif JP", serif;
+      letter-spacing: 0.3px;
     }
   </style>
 </head>
@@ -465,7 +530,7 @@
       </section>
     </div>
 
-    <!-- 右カラム：進捗・週次・名言・エクスポート -->
+    <!-- 右カラム：進捗・月次・名言・エクスポート -->
     <div>
       <!-- 進捗グラフ -->
       <section id="progress-section">
@@ -516,9 +581,9 @@
         </div>
       </section>
 
-      <!-- 一週間の成果（STEP別） -->
+      <!-- 一か月の成果（STEP別） -->
       <section id="weekly-section">
-        <h2><span class="icon">📊</span> 一週間の成果</h2>
+        <h2><span class="icon">📊</span> 一か月の成果</h2>
         <table>
           <thead>
             <tr>
@@ -813,24 +878,23 @@
       return streak;
     }
 
-    function getWeekRange(offsetWeeks = 0) {
-      const today = new Date();
-      const dayOfWeek = today.getDay();
-      const mondayOffset = (dayOfWeek + 6) % 7;
-      const monday = new Date(today);
-      monday.setDate(today.getDate() - mondayOffset + offsetWeeks * 7);
-      const sunday = new Date(monday);
-      sunday.setDate(monday.getDate() + 6);
+    function getMonthRange(offsetMonths = 0) {
+  const today = new Date();
+  // offsetMonths 分だけ月をずらした月の1日を基準にする
+  const base = new Date(today.getFullYear(), today.getMonth() + offsetMonths, 1);
+  const start = new Date(base.getFullYear(), base.getMonth(), 1);
+  const end = new Date(base.getFullYear(), base.getMonth() + 1, 0);
 
-      const toISO = d => {
-        const y = d.getFullYear();
-        const m = String(d.getMonth() + 1).padStart(2, "0");
-        const da = String(d.getDate()).padStart(2, "0");
-        return `${y}-${m}-${da}`;
-      };
+  const toISO = d => {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, "0");
+    const da = String(d.getDate()).padStart(2, "0");
+    return `${y}-${m}-${da}`;
+  };
 
-      return { start: toISO(monday), end: toISO(sunday) };
-    }
+  return { start: toISO(start), end: toISO(end) };
+}
+
 
     function isBetween(dateStr, startIso, endIso) {
       return dateStr >= startIso && dateStr <= endIso;
@@ -949,74 +1013,92 @@
     }
 
     // グラフ
-    function drawExerciseChart(exKey) {
-      const canvas = document.getElementById("chart-" + exKey);
-      if (!canvas) return;
-      const ctx = canvas.getContext("2d");
+    // グラフ（STEPごとの棒グラフ）
+function drawExerciseChart(exKey) {
+  const canvas = document.getElementById("chart-" + exKey);
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      const filtered = logs.filter(l => l.exercise === exKey);
-      if (filtered.length === 0) {
-        ctx.fillStyle = "#6b7280";
-        ctx.font = "12px sans-serif";
-        ctx.fillText("データなし", 10, 20);
-        return;
-      }
+  // 種目ごとに STEP1〜10 の合計レップスを集計
+  const stepTotals = new Array(11).fill(0); // index 1〜10 を使用
+  logs.forEach(l => {
+    if (l.exercise !== exKey) return;
+    let s = Number(l.step) || 0;
+    if (s < 1) s = 1;
+    if (s > 10) s = 10;
+    stepTotals[s] += l.totalReps;
+  });
 
-      const byDate = {};
-      filtered.forEach(l => {
-        if (!byDate[l.date]) byDate[l.date] = 0;
-        byDate[l.date] += l.totalReps;
-      });
+  const maxY = Math.max(...stepTotals.slice(1)); // STEP1〜10 の最大値
 
-      const dates = Object.keys(byDate).sort();
-      const values = dates.map(d => byDate[d]);
+  if (!maxY || maxY <= 0) {
+    ctx.fillStyle = "#6b7280";
+    ctx.font = "12px sans-serif";
+    ctx.fillText("データなし", 10, 20);
+    return;
+  }
 
-      const paddingLeft = 30;
-      const paddingBottom = 22;
-      const paddingTop = 10;
-      const paddingRight = 10;
-      const W = canvas.width;
-      const H = canvas.height;
+  const paddingLeft = 30;
+  const paddingBottom = 22;
+  const paddingTop = 10;
+  const paddingRight = 10;
+  const W = canvas.width;
+  const H = canvas.height;
 
-      const maxY = Math.max(...values, 1);
+  const innerWidth = W - paddingLeft - paddingRight;
+  const innerHeight = H - paddingTop - paddingBottom;
 
-      ctx.strokeStyle = "#374151";
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(paddingLeft, paddingTop);
-      ctx.lineTo(paddingLeft, H - paddingBottom);
-      ctx.lineTo(W - paddingRight, H - paddingBottom);
-      ctx.stroke();
+  // 軸
+  ctx.strokeStyle = "#374151";
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(paddingLeft, paddingTop);
+  ctx.lineTo(paddingLeft, H - paddingBottom);
+  ctx.lineTo(W - paddingRight, H - paddingBottom);
+  ctx.stroke();
 
-      ctx.fillStyle = "#6b7280";
-      ctx.font = "10px sans-serif";
-      ctx.textAlign = "right";
-      ctx.textBaseline = "middle";
-      ctx.fillText(String(maxY), paddingLeft - 4, paddingTop + 4);
-      ctx.fillText(String(Math.round(maxY / 2)), paddingLeft - 4, (H - paddingBottom + paddingTop) / 2);
+  // 目盛り（最大値と中間値）
+  ctx.fillStyle = "#6b7280";
+  ctx.font = "10px sans-serif";
+  ctx.textAlign = "right";
+  ctx.textBaseline = "middle";
+  ctx.fillText(String(maxY), paddingLeft - 4, paddingTop + 4);
+  ctx.fillText(String(Math.round(maxY / 2)), paddingLeft - 4, paddingTop + innerHeight / 2);
 
-      ctx.strokeStyle = "#38bdf8";
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      dates.forEach((d, i) => {
-        const x = paddingLeft + (dates.length === 1 ? (W - paddingLeft - paddingRight) / 2 : (W - paddingLeft - paddingRight) * (i / (dates.length - 1)));
-        const y = (H - paddingBottom) - (H - paddingBottom - paddingTop) * (values[i] / maxY);
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      });
-      ctx.stroke();
+  // 棒グラフ
+  const baseX = paddingLeft;
+  const slotWidth = innerWidth / 10;       // STEPごとのスロット幅
+  const barWidth = slotWidth * 0.6;        // 棒の幅
 
-      ctx.fillStyle = "#f97316";
-      dates.forEach((d, i) => {
-        const x = paddingLeft + (dates.length === 1 ? (W - paddingLeft - paddingRight) / 2 : (W - paddingLeft - paddingRight) * (i / (dates.length - 1)));
-        const y = (H - paddingBottom) - (H - paddingBottom - paddingTop) * (values[i] / maxY);
-        ctx.beginPath();
-        ctx.arc(x, y, 3, 0, Math.PI * 2);
-        ctx.fill();
-      });
-    }
+  ctx.fillStyle = "#38bdf8";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "top";
+
+  for (let s = 1; s <= 10; s++) {
+    const value = stepTotals[s];
+    const ratio = value / maxY;
+    const barHeight = innerHeight * ratio;
+
+    const centerX = baseX + slotWidth * (s - 0.5);
+    const x = centerX - barWidth / 2;
+    const y = (H - paddingBottom) - barHeight;
+
+    // 棒
+    ctx.beginPath();
+    ctx.rect(x, y, barWidth, barHeight);
+    ctx.fill();
+
+    // STEP ラベル（横軸）
+    ctx.fillStyle = "#9ca3af";
+    ctx.font = "9px sans-serif";
+    ctx.fillText(`S${s}`, centerX, H - paddingBottom + 4);
+
+    // 再度色戻し
+    ctx.fillStyle = "#38bdf8";
+  }
+}
 
     function renderAllCharts() {
       EXERCISES.forEach(ex => {
@@ -1028,57 +1110,59 @@
       });
     }
 
-    // 一週間の成果（STEP別）
+    // 一ヵ月の成果（STEP別）
     function renderWeeklyComparison() {
-      const tbody = document.getElementById("weekly-table-body");
-      tbody.innerHTML = "";
+  const tbody = document.getElementById("weekly-table-body");
+  tbody.innerHTML = "";
 
-      const thisWeek = getWeekRange(0);
+  // 当月の1日〜末日を範囲として使用
+  const thisMonth = getMonthRange(0);
 
-      EXERCISES.forEach(ex => {
-        const stepTotals = new Array(11).fill(0); // 1〜10を使用
+  EXERCISES.forEach(ex => {
+    const stepTotals = new Array(11).fill(0); // 1〜10を使用
 
-        logs.forEach(l => {
-          if (l.exercise !== ex.key) return;
-          if (!isBetween(l.date, thisWeek.start, thisWeek.end)) return;
+    logs.forEach(l => {
+      if (l.exercise !== ex.key) return;
+      if (!isBetween(l.date, thisMonth.start, thisMonth.end)) return;
 
-          let s = Number(l.step) || 0;
-          if (s < 1) s = 1;
-          if (s > 10) s = 10;
-          stepTotals[s] += l.totalReps;
-        });
+      let s = Number(l.step) || 0;
+      if (s < 1) s = 1;
+      if (s > 10) s = 10;
+      stepTotals[s] += l.totalReps;
+    });
 
-        const tr = document.createElement("tr");
-        const nameTd = document.createElement("td");
-        nameTd.textContent = ex.label;
-        tr.appendChild(nameTd);
+    const tr = document.createElement("tr");
+    const nameTd = document.createElement("td");
+    nameTd.textContent = ex.label;
+    tr.appendChild(nameTd);
 
-        let weekSum = 0;
-        for (let s = 1; s <= 10; s++) {
-          const td = document.createElement("td");
-          const v = stepTotals[s];
-          td.textContent = v > 0 ? v : "";
-          tr.appendChild(td);
-          weekSum += v;
-        }
-        const totalTd = document.createElement("td");
-        totalTd.textContent = weekSum;
-        tr.appendChild(totalTd);
-
-        tbody.appendChild(tr);
-      });
-
-      const streak = calcStreak();
-      const totalLogs = logs.length;
-      const msg = document.getElementById("motivation-message");
-      if (totalLogs === 0) {
-        msg.textContent = "まだ記録はありません。今日が “1日目” です🔥";
-      } else {
-        msg.textContent =
-          `現在の連続トレ日数：${streak}日 🔥  /  これまでの記録：${totalLogs} セッション\n` +
-          `「昨日の自分」を少しずつ上回っていきましょう。`;
-      }
+    let monthSum = 0;
+    for (let s = 1; s <= 10; s++) {
+      const td = document.createElement("td");
+      const v = stepTotals[s];
+      td.textContent = v > 0 ? v : "";
+      tr.appendChild(td);
+      monthSum += v;
     }
+    const totalTd = document.createElement("td");
+    totalTd.textContent = monthSum;
+    tr.appendChild(totalTd);
+
+    tbody.appendChild(tr);
+  });
+
+  const streak = calcStreak();
+  const totalLogs = logs.length;
+  const msg = document.getElementById("motivation-message");
+  if (totalLogs === 0) {
+    msg.textContent = "まだ記録はありません。今日が “1日目” です🔥";
+  } else {
+    msg.textContent =
+      `現在の連続トレ日数：${streak}日 🔥  /  これまでの記録：${totalLogs} セッション\n` +
+      `「昨日の自分」を少しずつ上回っていきましょう。`;
+  }
+}
+
 
     // 日付ごとの記録一覧
     function renderEntriesForDate(date) {
@@ -1458,4 +1542,3 @@
   </script>
 </body>
 </html>
-
