@@ -4,51 +4,50 @@
   <meta charset="UTF-8" />
   <title>Prisoner Training Tracker</title>
 
-  <!-- Holy × High-end 用フォント -->
+  <!-- フォント（日本語＋少しだけエレガントに） -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
 
   <style>
     * { box-sizing: border-box; }
 
-    /* ===== ベースレイアウト / 配色 ===== */
+    /* ===== ベースレイアウト / 配色（Holy × ソーシャルアプリ） ===== */
     body {
       margin: 0;
       font-family: "Noto Sans JP", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background:
-        radial-gradient(circle at top, rgba(212,175,55,0.18), transparent 58%),
-        #050711;
-      color: #e5e7eb;
+        radial-gradient(circle at top, rgba(244,114,182,0.20), transparent 60%),
+        linear-gradient(to bottom, #fff1f2, #e0f2fe);
+      color: #1f2937;
     }
 
     header {
       padding: 16px 24px;
-      background: linear-gradient(120deg, #050711, #101420 55%, #050711);
-      border-bottom: 1px solid rgba(212,175,55,0.45);
+      background: linear-gradient(135deg, #ec4899, #f97316);
+      border-bottom: 1px solid rgba(255,255,255,0.5);
       display: flex;
       justify-content: space-between;
       align-items: center;
       position: sticky;
       top: 0;
       z-index: 10;
-      box-shadow: 0 16px 40px rgba(0,0,0,0.6);
+      box-shadow: 0 12px 32px rgba(236,72,153,0.45);
+      color: #fff7ed;
     }
     header h1 {
       margin: 0;
-      font-size: 24px;
-      font-family: "Cormorant Garamond","Noto Serif JP", serif;
-      letter-spacing: 1px;
+      font-size: 22px;
+      letter-spacing: 0.04em;
     }
     header small {
-      color: #cbd5f5;
+      color: #ffe4e6;
       font-size: 12px;
     }
     #today-label {
       font-size: 12px;
-      color: #e5e7eb;
-      font-family: "Cormorant Garamond","Noto Serif JP", serif;
-      letter-spacing: 0.6px;
+      text-align: right;
+      opacity: 0.9;
     }
 
     main {
@@ -56,7 +55,7 @@
       max-width: 1200px;
       margin: 0 auto;
       display: grid;
-      grid-template-columns: 1.1fr 1.2fr;
+      grid-template-columns: 1.05fr 1.25fr;
       gap: 18px;
     }
     @media (max-width: 900px) {
@@ -66,30 +65,28 @@
     }
 
     section {
-      background: radial-gradient(circle at top, rgba(255,255,255,0.04), transparent 70%), #14171d;
-      border-radius: 16px;
+      background: #ffffff;
+      border-radius: 24px;
       padding: 20px 22px 22px;
-      border: 1px solid rgba(255,255,255,0.06);
-      box-shadow: 0 0 26px rgba(0,0,0,0.65);
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 12px 40px rgba(148,163,184,0.35);
     }
 
     section h2 {
       margin: 0 0 14px;
-      font-size: 18px;
+      font-size: 17px;
       display: flex;
       align-items: center;
-      gap: 10px;
-      font-family: "Cormorant Garamond","Noto Serif JP", serif;
-      letter-spacing: 0.5px;
+      gap: 8px;
+      color: #111827;
     }
     section h2 span.icon {
-      font-size: 20px;
-      color: #d4af37; /* ゴールドアクセント */
+      font-size: 19px;
     }
 
     label {
       font-size: 12px;
-      color: #a5b4fc;
+      color: #6b7280;
       display: block;
       margin-bottom: 4px;
     }
@@ -103,26 +100,26 @@
     input[type="date"],
     textarea {
       width: 100%;
-      background: rgba(255,255,255,0.02);
-      color: #f9fafb;
-      border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.16);
-      padding: 7px 9px;
+      background: #f9fafb;
+      color: #111827;
+      border-radius: 999px;
+      border: 1px solid #e5e7eb;
+      padding: 7px 11px;
       font-size: 13px;
       outline: none;
       transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
     }
+    textarea {
+      border-radius: 14px;
+      resize: vertical;
+      min-height: 40px;
+    }
     select:focus,
     input:focus,
     textarea:focus {
-      border-color: #d4af37;
-      box-shadow: 0 0 0 1px #d4af37;
-      background: rgba(255,255,255,0.06);
-    }
-
-    textarea {
-      resize: vertical;
-      min-height: 40px;
+      border-color: #fb7185;
+      box-shadow: 0 0 0 2px rgba(248,113,113,0.35);
+      background: #fff;
     }
 
     .form-row {
@@ -142,9 +139,9 @@
 
     /* ===== ボタン ===== */
     button.primary {
-      background: linear-gradient(135deg, #d4af37, #b38a2e);
+      background: linear-gradient(135deg, #ec4899, #f97316);
       border: none;
-      color: #050711;
+      color: #fff;
       padding: 9px 18px;
       border-radius: 999px;
       font-size: 14px;
@@ -153,16 +150,16 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      box-shadow: 0 0 14px rgba(212,175,55,0.55);
+      box-shadow: 0 10px 26px rgba(248,113,113,0.55);
     }
     button.primary:active {
       transform: scale(0.97);
-      box-shadow: 0 0 8px rgba(212,175,55,0.45);
+      box-shadow: 0 6px 18px rgba(248,113,113,0.45);
     }
     button.secondary {
-      background: rgba(212,175,55,0.10);
-      border: 1px solid rgba(212,175,55,0.45);
-      color: #facc15;
+      background: #fff;
+      border: 1px solid #fda4af;
+      color: #ec4899;
       padding: 6px 12px;
       border-radius: 999px;
       font-size: 12px;
@@ -170,10 +167,10 @@
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      backdrop-filter: blur(3px);
     }
     button.secondary:active {
       transform: scale(0.97);
+      background: #fdf2f8;
     }
     .buttons {
       display: flex;
@@ -192,9 +189,7 @@
     .calendar-header h3 {
       margin: 0;
       font-size: 14px;
-      font-family: "Cormorant Garamond","Noto Serif JP", serif;
-      letter-spacing: 0.5px;
-      color: #e5e7eb;
+      color: #111827;
     }
     .calendar-grid {
       display: grid;
@@ -203,23 +198,25 @@
       font-size: 11px;
     }
     .calendar-cell {
-      border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 16px;
+      border: 1px solid #e5e7eb;
       min-height: 54px;
       padding: 4px;
-      background: radial-gradient(circle at top, rgba(255,255,255,0.05), transparent 70%);
+      background: #f9fafb;
       cursor: pointer;
       position: relative;
-      transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.12s ease;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.12s ease, background 0.18s ease;
     }
     .calendar-cell:hover {
-      border-color: rgba(212,175,55,0.55);
-      box-shadow: 0 0 12px rgba(212,175,55,0.3);
+      border-color: #fb7185;
+      box-shadow: 0 6px 18px rgba(248,113,113,0.28);
       transform: translateY(-1px);
+      background: #fff;
     }
     .calendar-cell.today {
-      border-color: #d4af37;
-      box-shadow: 0 0 0 1px rgba(212,175,55,0.8);
+      border-color: #fb7185;
+      box-shadow: 0 0 0 2px rgba(248,113,113,0.5);
+      background: #fee2e2;
     }
     .calendar-cell-header {
       display: flex;
@@ -229,7 +226,7 @@
     }
     .calendar-date {
       font-size: 11px;
-      color: #e5e7eb;
+      color: #374151;
     }
     .calendar-dots {
       display: flex;
@@ -246,8 +243,6 @@
       font-size: 11px;
       color: #9ca3af;
       margin-bottom: 2px;
-      font-family: "Cormorant Garamond","Noto Serif JP", serif;
-      letter-spacing: 0.3px;
     }
 
     /* ===== Legend ===== */
@@ -262,13 +257,13 @@
       align-items: center;
       gap: 4px;
       font-size: 11px;
-      color: #cbd5f5;
+      color: #6b7280;
     }
     .legend-color {
       width: 10px;
       height: 10px;
       border-radius: 999px;
-      box-shadow: 0 0 6px rgba(0,0,0,0.6);
+      box-shadow: 0 0 6px rgba(148,163,184,0.7);
     }
 
     /* ===== Charts ===== */
@@ -283,26 +278,27 @@
       }
     }
     .chart-card {
-      background: #14171d;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.06);
+      background: #020617;
+      border-radius: 18px;
+      border: 1px solid #020617;
       padding: 10px;
-      box-shadow: inset 0 0 18px rgba(0,0,0,0.65);
+      box-shadow: 0 10px 30px rgba(15,23,42,0.9);
+      color: #e5e7eb;
     }
     .chart-title {
-      font-size: 12px;
-      margin-bottom: 6px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      color: #cbd5f5;
-    }
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;           /* 濃いグレーでくっきり */
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
+}
     canvas {
       width: 100%;
       max-width: 100%;
-      border-radius: 10px;
-      background: radial-gradient(circle at top, rgba(255,255,255,0.06), transparent 70%);
-      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 14px;
+      background: radial-gradient(circle at top, rgba(15,23,42,0.9), #020617);
     }
 
     /* ===== 月間サマリーテーブル ===== */
@@ -313,31 +309,29 @@
     }
     th, td {
       padding: 4px 6px;
-      border-bottom: 1px solid rgba(148,163,184,0.25);
+      border-bottom: 1px solid #e5e7eb;
       text-align: right;
     }
     th:first-child, td:first-child {
       text-align: left;
     }
     th {
-      color: #cbd5f5;
+      color: #6b7280;
       font-weight: 500;
       white-space: nowrap;
-      font-family: "Cormorant Garamond","Noto Serif JP", serif;
-      letter-spacing: 0.3px;
     }
     tbody tr:nth-child(even) {
-      background: rgba(15,23,42,0.55);
+      background: #f9fafb;
     }
 
     /* ===== Motivation ===== */
     #motivation-message {
       font-size: 13px;
-      background: radial-gradient(circle at top left, rgba(212,175,55,0.22), transparent 60%);
-      border-radius: 10px;
+      background: #111827;
+      border-radius: 16px;
       padding: 9px 11px;
-      border: 1px solid rgba(212,175,55,0.75);
-      margin-top: 6px;
+      border: 2px solid #facc15;
+      margin-top: 8px;
       color: #fef3c7;
       white-space: pre-line;
     }
@@ -348,13 +342,13 @@
       left: 50%;
       top: 16px;
       transform: translateX(-50%);
-      background: linear-gradient(135deg, #d4af37, #b38a2e);
-      color: #050711;
+      background: linear-gradient(135deg, #f97316, #ec4899);
+      color: #fff;
       padding: 10px 18px;
       border-radius: 999px;
       font-size: 14px;
       font-weight: 600;
-      box-shadow: 0 14px 38px rgba(212,175,55,0.55);
+      box-shadow: 0 14px 38px rgba(248,113,113,0.65);
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.3s ease, transform 0.3s ease;
@@ -370,38 +364,34 @@
       display: none;
       margin-bottom: 8px;
       padding: 6px 8px;
-      border-radius: 10px;
-      border: 1px solid #f59e0b;
-      background: rgba(248, 184, 80, 0.10);
+      border-radius: 14px;
+      border: 1px solid #f97316;
+      background: #fff7ed;
       font-size: 12px;
       align-items: center;
       justify-content: space-between;
       gap: 8px;
+      color: #9a3412;
     }
     #edit-banner.visible {
       display: flex;
     }
-    #edit-banner span {
-      color: #fed7aa;
-    }
     #date-entries-wrapper {
       margin-top: 12px;
-      border-top: 1px solid rgba(148,163,184,0.35);
+      border-top: 1px solid #e5e7eb;
       padding-top: 8px;
     }
     #date-entries-wrapper h3 {
       margin: 0 0 6px;
       font-size: 13px;
-      color: #cbd5f5;
-      font-family: "Cormorant Garamond","Noto Serif JP", serif;
-      letter-spacing: 0.3px;
+      color: #111827;
     }
     .entry-item {
-      border-radius: 10px;
-      border: 1px solid rgba(148,163,184,0.35);
+      border-radius: 14px;
+      border: 1px solid #e5e7eb;
       padding: 6px 8px;
       margin-bottom: 6px;
-      background: rgba(15,23,42,0.85);
+      background: #f9fafb;
       font-size: 12px;
       display: flex;
       justify-content: space-between;
@@ -436,10 +426,53 @@
     }
     #quote-meta {
       font-size: 11px;
-      color: #cbd5f5;
-      font-family: "Cormorant Garamond","Noto Serif JP", serif;
-      letter-spacing: 0.3px;
+      color: #6b7280;
     }
+    /* ===== 進捗グラフ＆一か月の成果セクションのトーン調整 ===== */
+
+/* セクション本体を少し明るめのカードに */
+#progress-section,
+#weekly-section {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+  border-radius: 20px;
+}
+
+/* グラフカードをライトグレーにして浮遊感を弱める */
+.chart-card {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06) inset;
+}
+
+/* キャンバスはカードと馴染ませる */
+.chart-card canvas {
+  background: transparent;
+}
+
+/* 一か月の成果テーブルもライトトーンに */
+#weekly-section table {
+  background: #f9fafb;
+  border-radius: 12px;
+  overflow: hidden;
+}
+#weekly-section th,
+#weekly-section td {
+  border-bottom: 1px solid #e5e7eb;
+  color: #111827;
+}
+
+/* モチベーションメッセージを“帯”っぽいライトカードに */
+#motivation-message {
+  background: #fffbe6;
+  border: 1px solid #facc15;
+  color: #92400e;
+  box-shadow: 0 8px 20px rgba(251, 191, 36, 0.35);
+  border-radius: 16px;
+}
+
   </style>
 </head>
 <body>
@@ -539,42 +572,36 @@
           <div class="chart-card">
             <div class="chart-title">
               <span>プッシュアップ</span>
-              <span id="step-label-pushup"></span>
             </div>
             <canvas id="chart-pushup" width="400" height="220"></canvas>
           </div>
           <div class="chart-card">
             <div class="chart-title">
               <span>スクワット</span>
-              <span id="step-label-squat"></span>
             </div>
             <canvas id="chart-squat" width="400" height="220"></canvas>
           </div>
           <div class="chart-card">
             <div class="chart-title">
               <span>プルアップ</span>
-              <span id="step-label-pullup"></span>
             </div>
             <canvas id="chart-pullup" width="400" height="220"></canvas>
           </div>
           <div class="chart-card">
             <div class="chart-title">
               <span>レッグレイズ</span>
-              <span id="step-label-legraise"></span>
             </div>
             <canvas id="chart-legraise" width="400" height="220"></canvas>
           </div>
           <div class="chart-card">
             <div class="chart-title">
               <span>ブリッジ</span>
-              <span id="step-label-bridge"></span>
             </div>
             <canvas id="chart-bridge" width="400" height="220"></canvas>
           </div>
           <div class="chart-card">
             <div class="chart-title">
               <span>ハンドスタンド</span>
-              <span id="step-label-handstand"></span>
             </div>
             <canvas id="chart-handstand" width="400" height="220"></canvas>
           </div>
@@ -632,166 +659,38 @@
   <script>
     // ====== 名言データ ======
     const QUOTES = [
-      {
-        text: "限界は筋肉が決めるんじゃない。\n今日の自分の覚悟が決める。",
-        author: "無名のハードトレーニー",
-        theme: "覚悟・限界突破"
-      },
-      {
-        text: "才能とは「続ける根性」に\n後から付いてくるニックネームだ。",
-        author: "どこかの天才候補",
-        theme: "才能・継続"
-      },
-      {
-        text: "サボった1日は、\n未来の自分からの借金だ。\n利子は“後悔”で払うことになる。",
-        author: "未来の自分",
-        theme: "継続・覚悟"
-      },
-      {
-        text: "筋肉は裏切らない。\n裏切ってくるのは、\nいつも言い訳だけだ。",
-        author: "筋肉原理主義者",
-        theme: "筋肉・言い訳"
-      },
-      {
-        text: "才能の差はスタートライン。\n根性の差はゴールテープでわかる。",
-        author: "レースの観客",
-        theme: "才能・根性"
-      },
-      {
-        text: "「続けられる人」は\n特別じゃない。\nやめないと決めただけの\n普通の人だ。",
-        author: "継続中毒者",
-        theme: "継続"
-      },
-      {
-        text: "あきらめる理由が\n100個あってもいい。\n続ける理由を\n1個だけ握りしめていれば勝ちだ。",
-        author: "崖っぷちの挑戦者",
-        theme: "あきらめない心"
-      },
-      {
-        text: "自信は\n「できた回数」の貯金だ。\n今日の1レップが、\n明日のドヤ顔を作る。",
-        author: "自意識マッチョ",
-        theme: "自信・努力"
-      },
-      {
-        text: "努力は\n裏切ることもある。\nでも、\nサボりは一度も\n裏切ったことがない。",
-        author: "反省会の常連",
-        theme: "努力・サボり"
-      },
-      {
-        text: "筋肉痛は、\n昨日の自分から届いた\n合格通知だ。",
-        author: "DOMSラバー",
-        theme: "筋肉・鍛錬"
-      },
-      {
-        text: "「まだいけるか？」じゃない。\n「ここからが本番だろ？」だ。",
-        author: "追い込み番長",
-        theme: "根性・追い込み"
-      },
-      {
-        text: "才能がドアを叩くのを\n待っている暇があるなら、\n今の自分でドアをぶち破れ。",
-        author: "壊し屋メンタリスト",
-        theme: "才能・行動"
-      },
-      {
-        text: "覚悟とは、\n「逃げ道を消す」ことじゃない。\n「逃げてもまた戻る」と\n決めている心だ。",
-        author: "出戻り戦士",
-        theme: "覚悟・継続"
-      },
-      {
-        text: "続けた奴だけが知っている。\n三日坊主には見えない景色が、\n四日目に急に来る。",
-        author: "四日目の住人",
-        theme: "継続"
-      },
-      {
-        text: "筋トレは\n「明日カッコよくなる儀式」じゃない。\n「今ここで\n自分を好きになる儀式」だ。",
-        author: "自尊心ビルダー",
-        theme: "筋肉・自信"
-      },
-      {
-        text: "限界だと思った回数から先が、\n“努力”で、\nそれまでは全部“準備運動”だ。",
-        author: "鬼コーチの中の人",
-        theme: "努力・限界"
-      },
-      {
-        text: "あきらめない心は、\n一度決めたら\n一生錆びない。\n錆びるのは\n決意じゃなくて言い訳だ。",
-        author: "ネバーギブアッパー",
-        theme: "あきらめない心"
-      },
-      {
-        text: "「センスがない」は\n今日サボるための\n一番オシャレな言い訳だ。",
-        author: "毒舌トレーナー",
-        theme: "才能・言い訳"
-      },
-      {
-        text: "根性とは、\n心が折れても\n行動だけは折らないことだ。",
-        author: "折れまくり経験者",
-        theme: "根性・行動"
-      },
-      {
-        text: "継続のコツは一つだけ。\n「やるか」「もっとやるか」の\n二択しか持たないことだ。",
-        author: "二択マニア",
-        theme: "継続・鍛錬"
-      },
-      {
-        text: "自信は\n結果からじゃなく、\n「ここまでやった自分」を\n裏切らなかった記憶から生まれる。",
-        author: "記憶コレクター",
-        theme: "自信・努力"
-      },
-      {
-        text: "今日サボれば\n楽にはなる。\nでも「自分ってこうだよな」が\nどんどんショボくなる。",
-        author: "元・言い訳職人",
-        theme: "自分像・覚悟"
-      },
-      {
-        text: "筋肉は\nウソをつかないけど、\nサボり続けると\n何も語ってくれなくなる。",
-        author: "筋肉との別れを経験した人",
-        theme: "筋肉・継続"
-      },
-      {
-        text: "才能はスタートダッシュ、\n根性は最後の一歩。\nレースを決めるのは\nいつも“最後の一歩”だ。",
-        author: "ゴールテープの目撃者",
-        theme: "才能・根性"
-      },
-      {
-        text: "鍛錬とは、\n「今日もやった」という\n小さい誇りを\n地層みたいに積み上げる作業だ。",
-        author: "誇りの地質学者",
-        theme: "鍛錬・継続"
-      },
-      {
-        text: "覚悟を決めるのに\nドラマチックな理由はいらない。\n「そろそろ本気出すか」で十分だ。",
-        author: "きっかけ職人",
-        theme: "覚悟"
-      },
-      {
-        text: "あきらめなかった人間だけが、\n「やめなくてよかった」と\n未来形で笑える。",
-        author: "未来から来たトレーニー",
-        theme: "あきらめない心"
-      },
-      {
-        text: "努力は報われないこともある。\nでも“努力しなかった自分”だけは\n一生許せない。",
-        author: "自己採点の鬼",
-        theme: "努力・後悔"
-      },
-      {
-        text: "自信をつけたいなら、\n結果をいじるな。\n今日の行動をいじれ。",
-        author: "現実主義の夢追い人",
-        theme: "自信・行動"
-      },
-      {
-        text: "筋肉は\n過去の自分からの\nラブレターだ。\nサボれば、\nいきなり音信不通になる。",
-        author: "ロマンチックボディ",
-        theme: "筋肉・継続"
-      },
-      {
-        text: "「まだ本気出してないだけ」は、\n本気を一度も出したことがない人の\n決まり文句だ。",
-        author: "鬼畜現実さん",
-        theme: "覚悟・行動"
-      },
-      {
-        text: "継続とは、\n“昨日までの自分”に\n容赦なく期待し続ける勇気だ。",
-        author: "期待し続ける人",
-        theme: "継続・勇気"
-      }
+      { text: "限界は筋肉が決めるんじゃない。\n今日の自分の覚悟が決める。", author: "無名のハードトレーニー", theme: "覚悟・限界突破" },
+      { text: "才能とは「続ける根性」に\n後から付いてくるニックネームだ。", author: "どこかの天才候補", theme: "才能・継続" },
+      { text: "サボった1日は、\n未来の自分からの借金だ。\n利子は“後悔”で払うことになる。", author: "未来の自分", theme: "継続・覚悟" },
+      { text: "筋肉は裏切らない。\n裏切ってくるのは、\nいつも言い訳だけだ。", author: "筋肉原理主義者", theme: "筋肉・言い訳" },
+      { text: "才能の差はスタートライン。\n根性の差はゴールテープでわかる。", author: "レースの観客", theme: "才能・根性" },
+      { text: "「続けられる人」は\n特別じゃない。\nやめないと決めただけの\n普通の人だ。", author: "継続中毒者", theme: "継続" },
+      { text: "あきらめる理由が\n100個あってもいい。\n続ける理由を\n1個だけ握りしめていれば勝ちだ。", author: "崖っぷちの挑戦者", theme: "あきらめない心" },
+      { text: "自信は\n「できた回数」の貯金だ。\n今日の1レップが、\n明日のドヤ顔を作る。", author: "自意識マッチョ", theme: "自信・努力" },
+      { text: "努力は\n裏切ることもある。\nでも、\nサボりは一度も\n裏切ったことがない。", author: "反省会の常連", theme: "努力・サボり" },
+      { text: "筋肉痛は、\n昨日の自分から届いた\n合格通知だ。", author: "DOMSラバー", theme: "筋肉・鍛錬" },
+      { text: "「まだいけるか？」じゃない。\n「ここからが本番だろ？」だ。", author: "追い込み番長", theme: "根性・追い込み" },
+      { text: "才能がドアを叩くのを\n待っている暇があるなら、\n今の自分でドアをぶち破れ。", author: "壊し屋メンタリスト", theme: "才能・行動" },
+      { text: "覚悟とは、\n「逃げ道を消す」ことじゃない。\n「逃げてもまた戻る」と\n決めている心だ。", author: "出戻り戦士", theme: "覚悟・継続" },
+      { text: "続けた奴だけが知っている。\n三日坊主には見えない景色が、\n四日目に急に来る。", author: "四日目の住人", theme: "継続" },
+      { text: "筋トレは\n「明日カッコよくなる儀式」じゃない。\n「今ここで\n自分を好きになる儀式」だ。", author: "自尊心ビルダー", theme: "筋肉・自信" },
+      { text: "限界だと思った回数から先が、\n“努力”で、\nそれまでは全部“準備運動”だ。", author: "鬼コーチの中の人", theme: "努力・限界" },
+      { text: "あきらめない心は、\n一度決めたら\n一生錆びない。\n錆びるのは\n決意じゃなくて言い訳だ。", author: "ネバーギブアッパー", theme: "あきらめない心" },
+      { text: "「センスがない」は\n今日サボるための\n一番オシャレな言い訳だ。", author: "毒舌トレーナー", theme: "才能・言い訳" },
+      { text: "根性とは、\n心が折れても\n行動だけは折らないことだ。", author: "折れまくり経験者", theme: "根性・行動" },
+      { text: "継続のコツは一つだけ。\n「やるか」「もっとやるか」の\n二択しか持たないことだ。", author: "二択マニア", theme: "継続・鍛錬" },
+      { text: "自信は\n結果からじゃなく、\n「ここまでやった自分」を\n裏切らなかった記憶から生まれる。", author: "記憶コレクター", theme: "自信・努力" },
+      { text: "今日サボれば\n楽にはなる。\nでも「自分ってこうだよな」が\nどんどんショボくなる。", author: "元・言い訳職人", theme: "自分像・覚悟" },
+      { text: "筋肉は\nウソをつかないけど、\nサボり続けると\n何も語ってくれなくなる。", author: "筋肉との別れを経験した人", theme: "筋肉・継続" },
+      { text: "才能はスタートダッシュ、\n根性は最後の一歩。\nレースを決めるのは\nいつも“最後の一歩”だ。", author: "ゴールテープの目撃者", theme: "才能・根性" },
+      { text: "鍛錬とは、\n「今日もやった」という\n小さい誇りを\n地層みたいに積み上げる作業だ。", author: "誇りの地質学者", theme: "鍛錬・継続" },
+      { text: "覚悟を決めるのに\nドラマチックな理由はいらない。\n「そろそろ本気出すか」で十分だ。", author: "きっかけ職人", theme: "覚悟" },
+      { text: "あきらめなかった人間だけが、\n「やめなくてよかった」と\n未来形で笑える。", author: "未来から来たトレーニー", theme: "あきらめない心" },
+      { text: "努力は報われないこともある。\nでも“努力しなかった自分”だけは\n一生許せない。", author: "自己採点の鬼", theme: "努力・後悔" },
+      { text: "自信をつけたいなら、\n結果をいじるな。\n今日の行動をいじれ。", author: "現実主義の夢追い人", theme: "自信・行動" },
+      { text: "筋肉は\n過去の自分からの\nラブレターだ。\nサボれば、\nいきなり音信不通になる。", author: "ロマンチックボディ", theme: "筋肉・継続" },
+      { text: "「まだ本気出してないだけ」は、\n本気を一度も出したことがない人の\n決まり文句だ。", author: "鬼畜現実さん", theme: "覚悟・行動" },
+      { text: "継続とは、\n“昨日までの自分”に\n容赦なく期待し続ける勇気だ。", author: "期待し続ける人", theme: "継続・勇気" }
     ];
 
     // ====== 定数・状態 ======
@@ -858,11 +757,15 @@
       }, 2500);
     }
 
+    // 「最後に記録した日」からさかのぼった連続日数
     function calcStreak() {
       if (logs.length === 0) return 0;
-      const datesSet = new Set(logs.map(l => l.date));
+
+      const uniqueDates = Array.from(new Set(logs.map(l => l.date))).sort();
+      const datesSet = new Set(uniqueDates);
       let streak = 0;
-      let day = parseISO(todayISO());
+
+      let day = parseISO(uniqueDates[uniqueDates.length - 1]); // 最終記録日から
       while (true) {
         const y = day.getFullYear();
         const m = String(day.getMonth() + 1).padStart(2, "0");
@@ -879,22 +782,20 @@
     }
 
     function getMonthRange(offsetMonths = 0) {
-  const today = new Date();
-  // offsetMonths 分だけ月をずらした月の1日を基準にする
-  const base = new Date(today.getFullYear(), today.getMonth() + offsetMonths, 1);
-  const start = new Date(base.getFullYear(), base.getMonth(), 1);
-  const end = new Date(base.getFullYear(), base.getMonth() + 1, 0);
+      const today = new Date();
+      const base = new Date(today.getFullYear(), today.getMonth() + offsetMonths, 1);
+      const start = new Date(base.getFullYear(), base.getMonth(), 1);
+      const end = new Date(base.getFullYear(), base.getMonth() + 1, 0);
 
-  const toISO = d => {
-    const y = d.getFullYear();
-    const m = String(d.getMonth() + 1).padStart(2, "0");
-    const da = String(d.getDate()).padStart(2, "0");
-    return `${y}-${m}-${da}`;
-  };
+      const toISO = d => {
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, "0");
+        const da = String(d.getDate()).padStart(2, "0");
+        return `${y}-${m}-${da}`;
+      };
 
-  return { start: toISO(start), end: toISO(end) };
-}
-
+      return { start: toISO(start), end: toISO(end) };
+    }
 
     function isBetween(dateStr, startIso, endIso) {
       return dateStr >= startIso && dateStr <= endIso;
@@ -979,7 +880,7 @@
         if (count === 0) {
           const empty = document.createElement("span");
           empty.style.fontSize = "10px";
-          empty.style.color = "#374151";
+          empty.style.color = "#d1d5db";
           empty.textContent = "-";
           dotsContainer.appendChild(empty);
         }
@@ -1012,157 +913,151 @@
       });
     }
 
-    // グラフ
     // グラフ（STEPごとの棒グラフ）
-function drawExerciseChart(exKey) {
-  const canvas = document.getElementById("chart-" + exKey);
-  if (!canvas) return;
-  const ctx = canvas.getContext("2d");
+    function drawExerciseChart(exKey) {
+      const canvas = document.getElementById("chart-" + exKey);
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // 種目ごとに STEP1〜10 の合計レップスを集計
-  const stepTotals = new Array(11).fill(0); // index 1〜10 を使用
-  logs.forEach(l => {
-    if (l.exercise !== exKey) return;
-    let s = Number(l.step) || 0;
-    if (s < 1) s = 1;
-    if (s > 10) s = 10;
-    stepTotals[s] += l.totalReps;
-  });
+      // 種目ごとに STEP1〜10 の合計レップスを集計
+      const stepTotals = new Array(11).fill(0); // index 1〜10 を使用
+      logs.forEach(l => {
+        if (l.exercise !== exKey) return;
+        let s = Number(l.step) || 0;
+        if (s < 1) s = 1;
+        if (s > 10) s = 10;
+        stepTotals[s] += l.totalReps;
+      });
 
-  const maxY = Math.max(...stepTotals.slice(1)); // STEP1〜10 の最大値
+      const maxY = Math.max(...stepTotals.slice(1)); // STEP1〜10 の最大値
 
-  if (!maxY || maxY <= 0) {
-    ctx.fillStyle = "#6b7280";
-    ctx.font = "12px sans-serif";
-    ctx.fillText("データなし", 10, 20);
-    return;
-  }
+      if (!maxY || maxY <= 0) {
+        ctx.fillStyle = "#6b7280";
+        ctx.font = "18px sans-serif";
+        ctx.fillText("データなし", 10, 20);
+        return;
+      }
 
-  const paddingLeft = 30;
-  const paddingBottom = 22;
-  const paddingTop = 10;
-  const paddingRight = 10;
-  const W = canvas.width;
-  const H = canvas.height;
+      const paddingLeft = 30;
+      const paddingBottom = 22;
+      const paddingTop = 10;
+      const paddingRight = 10;
+      const W = canvas.width;
+      const H = canvas.height;
 
-  const innerWidth = W - paddingLeft - paddingRight;
-  const innerHeight = H - paddingTop - paddingBottom;
+      const innerWidth = W - paddingLeft - paddingRight;
+      const innerHeight = H - paddingTop - paddingBottom;
 
-  // 軸
-  ctx.strokeStyle = "#374151";
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.moveTo(paddingLeft, paddingTop);
-  ctx.lineTo(paddingLeft, H - paddingBottom);
-  ctx.lineTo(W - paddingRight, H - paddingBottom);
-  ctx.stroke();
+      // 軸
+      ctx.strokeStyle = "#374151";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(paddingLeft, paddingTop);
+      ctx.lineTo(paddingLeft, H - paddingBottom);
+      ctx.lineTo(W - paddingRight, H - paddingBottom);
+      ctx.stroke();
 
-  // 目盛り（最大値と中間値）
-  ctx.fillStyle = "#6b7280";
-  ctx.font = "10px sans-serif";
+      // 目盛り
+      ctx.fillStyle = "#4b5563";
+  ctx.font = "18px system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
   ctx.textAlign = "right";
   ctx.textBaseline = "middle";
-  ctx.fillText(String(maxY), paddingLeft - 4, paddingTop + 4);
-  ctx.fillText(String(Math.round(maxY / 2)), paddingLeft - 4, paddingTop + innerHeight / 2);
+  ctx.fillText(String(maxY), paddingLeft - 6, paddingTop + 2);
+  ctx.fillText(String(Math.round(maxY / 2)), paddingLeft - 6, paddingTop + innerHeight / 2);
 
-  // 棒グラフ
-  const baseX = paddingLeft;
-  const slotWidth = innerWidth / 10;       // STEPごとのスロット幅
-  const barWidth = slotWidth * 0.6;        // 棒の幅
+      // 棒グラフ
+      const baseX = paddingLeft;
+      const slotWidth = innerWidth / 10;
+      const barWidth = slotWidth * 0.6;
+      
+      
 
-  ctx.fillStyle = "#38bdf8";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "top";
+      ctx.fillStyle = "#38bdf8";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "top";
 
-  for (let s = 1; s <= 10; s++) {
-    const value = stepTotals[s];
-    const ratio = value / maxY;
-    const barHeight = innerHeight * ratio;
+      for (let s = 1; s <= 10; s++) {
+        const value = stepTotals[s];
+        const ratio = value / maxY;
+        const barHeight = innerHeight * ratio;
 
-    const centerX = baseX + slotWidth * (s - 0.5);
-    const x = centerX - barWidth / 2;
-    const y = (H - paddingBottom) - barHeight;
+        const centerX = baseX + slotWidth * (s - 0.5);
+        const x = centerX - barWidth / 2;
+        const y = (H - paddingBottom) - barHeight;
 
-    // 棒
-    ctx.beginPath();
-    ctx.rect(x, y, barWidth, barHeight);
-    ctx.fill();
+        const BAR_COLOR = "#ff6b81";
 
-    // STEP ラベル（横軸）
-    ctx.fillStyle = "#9ca3af";
-    ctx.font = "9px sans-serif";
-    ctx.fillText(`S${s}`, centerX, H - paddingBottom + 4);
+        ctx.fillStyle = BAR_COLOR;
+        ctx.beginPath();
+        ctx.rect(x, y, barWidth, barHeight);
+        ctx.fill();
 
-    // 再度色戻し
-    ctx.fillStyle = "#38bdf8";
-  }
-}
+        ctx.fillStyle = "#9ca3af";
+        ctx.font = "18px sans-serif";
+        ctx.fillText(`S${s}`, centerX, H - paddingBottom + 4);
+        ctx.fillStyle = "#38bdf8";
+      }
+    }
 
     function renderAllCharts() {
       EXERCISES.forEach(ex => {
         drawExerciseChart(ex.key);
-        const label = document.getElementById("step-label-" + ex.key);
-        if (label) {
-          label.textContent = "STEP " + (currentSteps[ex.key] || 1);
-        }
       });
     }
 
-    // 一ヵ月の成果（STEP別）
+    // 一か月の成果（STEP別）
     function renderWeeklyComparison() {
-  const tbody = document.getElementById("weekly-table-body");
-  tbody.innerHTML = "";
+      const tbody = document.getElementById("weekly-table-body");
+      tbody.innerHTML = "";
 
-  // 当月の1日〜末日を範囲として使用
-  const thisMonth = getMonthRange(0);
+      const thisMonth = getMonthRange(0);
 
-  EXERCISES.forEach(ex => {
-    const stepTotals = new Array(11).fill(0); // 1〜10を使用
+      EXERCISES.forEach(ex => {
+        const stepTotals = new Array(11).fill(0); // 1〜10を使用
 
-    logs.forEach(l => {
-      if (l.exercise !== ex.key) return;
-      if (!isBetween(l.date, thisMonth.start, thisMonth.end)) return;
+        logs.forEach(l => {
+          if (l.exercise !== ex.key) return;
+          if (!isBetween(l.date, thisMonth.start, thisMonth.end)) return;
 
-      let s = Number(l.step) || 0;
-      if (s < 1) s = 1;
-      if (s > 10) s = 10;
-      stepTotals[s] += l.totalReps;
-    });
+          let s = Number(l.step) || 0;
+          if (s < 1) s = 1;
+          if (s > 10) s = 10;
+          stepTotals[s] += l.totalReps;
+        });
 
-    const tr = document.createElement("tr");
-    const nameTd = document.createElement("td");
-    nameTd.textContent = ex.label;
-    tr.appendChild(nameTd);
+        const tr = document.createElement("tr");
+        const nameTd = document.createElement("td");
+        nameTd.textContent = ex.label;
+        tr.appendChild(nameTd);
 
-    let monthSum = 0;
-    for (let s = 1; s <= 10; s++) {
-      const td = document.createElement("td");
-      const v = stepTotals[s];
-      td.textContent = v > 0 ? v : "";
-      tr.appendChild(td);
-      monthSum += v;
+        let monthSum = 0;
+        for (let s = 1; s <= 10; s++) {
+          const td = document.createElement("td");
+          const v = stepTotals[s];
+          td.textContent = v > 0 ? v : "";
+          tr.appendChild(td);
+          monthSum += v;
+        }
+        const totalTd = document.createElement("td");
+        totalTd.textContent = monthSum;
+        tr.appendChild(totalTd);
+
+        tbody.appendChild(tr);
+      });
+
+      const streak = calcStreak();
+      const totalLogs = logs.length;
+      const msg = document.getElementById("motivation-message");
+      if (totalLogs === 0) {
+        msg.textContent = "まだ記録はありません。今日が “1日目” です🔥";
+      } else {
+        msg.textContent =
+          `現在の連続トレ日数：${streak}日 🔥  /  これまでの記録：${totalLogs} セッション\n` +
+          `「昨日の自分」を少しずつ上回っていきましょう。`;
+      }
     }
-    const totalTd = document.createElement("td");
-    totalTd.textContent = monthSum;
-    tr.appendChild(totalTd);
-
-    tbody.appendChild(tr);
-  });
-
-  const streak = calcStreak();
-  const totalLogs = logs.length;
-  const msg = document.getElementById("motivation-message");
-  if (totalLogs === 0) {
-    msg.textContent = "まだ記録はありません。今日が “1日目” です🔥";
-  } else {
-    msg.textContent =
-      `現在の連続トレ日数：${streak}日 🔥  /  これまでの記録：${totalLogs} セッション\n` +
-      `「昨日の自分」を少しずつ上回っていきましょう。`;
-  }
-}
-
 
     // 日付ごとの記録一覧
     function renderEntriesForDate(date) {
@@ -1195,7 +1090,7 @@ function drawExerciseChart(exKey) {
           `${exInfo ? exInfo.label : entry.exercise} / STEP ${entry.step} / ${entry.sets}セット × ${entry.repsPerSet}回（合計${entry.totalReps}）`;
         const line2 = document.createElement("div");
         line2.style.fontSize = "11px";
-        line2.style.color = "#9ca3af";
+        line2.style.color = "#6b7280";
         line2.textContent = entry.note || "メモなし";
 
         main.appendChild(line1);
